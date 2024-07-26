@@ -56,46 +56,6 @@ def main():
     
             tipi()
     
-    
-    # tab1.subheader("Escala de Beck sobre ansiedad, estés y depresión")
-
-    # tab1.text("\n"
-    #         "Por favor, lea cada enunciado detenidamente y marque los números del 0 al 3, \n"
-    #         "indicando cual de estas afirmaciones definiría mejor su última semana. \n"
-    #         "No hay respuestas correctas o incorrectas. \n"
-    #         "Trate de no gastar mucho tiempo en la respuesta a cada afirmación. \n"
-    #         "\n")
-    
-    # tab1.subheader("La escala de calificación es la siguiente: \n")
-
-    # tab1.text("0  No me aplica en lo absoluto. \n"
-    #         "1  Me aplica en cierta medida, o algunas veces. \n"
-    #         "2  Me aplica considerablemente, o buena parte del tiempo. \n"
-    #         "3  Me aplica mucho, o la mayoría de las veces. \n"
-    #         "\n")
-
-    # qw = qwerys()
-    
-    # #TIPI________________________________________________
-
-    # tab2.subheader('TIPI, inventario de la personalidad de 10 ítems')
-
-    # tab2.text("El siguiente inventario es para hacer una clasificación de personalidad.")
-    # tab2.text("Los ítems del Tipi se califican de la siguiente manera: \n"
-    #         "Estoy (Puntuación) en que soy:________")
-    
-
-    # tab2.text("Puntuación:\n"
-    #         "1 = Muy en desacuerdo.\n"
-    #         "2 = Moderadamente en desacuerdo.\n"
-    #         "3 = Un poco en desacuerdo.\n"
-    #         "4 = Ni de acuerdo ni en desacuerdo.\n"
-    #         "5 = Un poco de acuerdo.\n"
-    #         "6 = Moderadamente de acuerdo.\n"
-    #         "7 = Muy de acuerdo.")
-    
-    # tp=tipi()
-
 
 def tipi():
     st.subheader('TIPI, inventario de la personalidad de 10 ítems')
