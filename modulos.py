@@ -1,4 +1,6 @@
 import streamlit as st 
+import streamlit.components.v1 as components
+import pandas as pd
 
 def main():
 
@@ -11,24 +13,26 @@ def main():
             "\n"
             "Gracias por participar")
     
+    
+
     tab1, tab2, tab3 = st.tabs(["Escala de Beck", "Tipi", "Datos demográficos"])
     
 
     #-----------------------------------ESCALA BECK---------------------------------
     with tab1:
 
-        tab1.subheader("Escala de Beck sobre ansiedad, estrés y depresión")
+        st.subheader("Escala de Beck sobre ansiedad, estrés y depresión")
 
-        tab1.text("\n"
+        st.text("\n"
             "Por favor, lea atentamente y marque la respuesta,\n"
             "indicando cual de estas afirmaciones definiría mejor su última semana. \n"
             "No hay respuestas correctas o incorrectas. \n"
             "Trate de no gastar mucho tiempo en la respuesta a cada afirmación. \n"
             "\n")
     
-        tab1.subheader("La escala de calificación es la siguiente: \n")
+        st.subheader("La escala de calificación es la siguiente: \n")
 
-        tab1.text("0  No me aplica en lo absoluto. \n"
+        st.text("0  No me aplica en lo absoluto. \n"
             "1  Me aplica en cierta medida, o algunas veces. \n"
             "2  Me aplica considerablemente, o buena parte del tiempo. \n"
             "3  Me aplica mucho, o la mayoría de las veces. \n"
@@ -38,14 +42,14 @@ def main():
     #-----------------------TIPI------------------------------------
         with tab2:
         
-            tab2.subheader('TIPI, inventario de la personalidad de 10 ítems')
+            st.subheader('TIPI, inventario de la personalidad de 10 ítems')
 
-            tab2.text("El siguiente inventario es para hacer una clasificación de personalidad.")
-            tab2.text("Los ítems del Tipi se califican de la siguiente manera: \n"
+            st.text("El siguiente inventario es para hacer una clasificación de personalidad.")
+            st.text("Los ítems del Tipi se califican de la siguiente manera: \n"
                       "Estoy (Puntuación) en que soy:________")
     
 
-            tab2.text("Puntuación:\n"
+            st.text("Puntuación:\n"
                     "1 = Muy en desacuerdo.\n"
                     "2 = Moderadamente en desacuerdo.\n"
                     "3 = Un poco en desacuerdo.\n"
@@ -56,6 +60,13 @@ def main():
     
             tipi()
     
+
+        with tab3:
+            
+            st.subheader('Datos del entorno y desarrollo personal.')
+            st.text('Por favor, rellena los siguientes campos con datos lo más verídicos posible.')
+
+            demographic()
 
 def tipi():
     st.subheader('TIPI, inventario de la personalidad de 10 ítems')
@@ -85,9 +96,8 @@ def tipi():
         "TIPI7"  : st.radio("Simpático, cálido", options=options, index=0, horizontal=True),
         "TIPI8"  : st.radio("Desorganizado, descuidado", options=options, index=0, horizontal=True),
         "TIPI9"  : st.radio("Calmado, emocionalmente estable", options=options, index=0, horizontal=True),
-        "TIPI10" : st.radio("Convencional, poco creativo", options=options, index=0, horizontal=True),
-    }
-
+        "TIPI10" : st.radio("Convencional, poco creativo", options=options, index=0, horizontal=True)}
+    
     return items
 
 
@@ -138,10 +148,33 @@ def qwerys():
         "Q39": st.radio("39 - Me sentí agitado", options=options, index=0, horizontal=True),
         "Q40": st.radio("40 - Me preocupaban situaciones en las que podría entrar en pánico y hacer el ridículo", options=options, index=0, horizontal=True),
         "Q41": st.radio("41 - Experimenté temblores (por ejemplo: en las manos)", options=options, index=0, horizontal=True),
-        "Q42": st.radio("42 - Me resultaba difícil reunir iniciativa o motivación para hacer las cosas", options=options, index=0, horizontal=True)
-    }
+        "Q42": st.radio("42 - Me resultaba difícil reunir iniciativa o motivación para hacer las cosas", options=options, index=0, horizontal=True)}
 
     return qw
+
+def demographic():
+
+    options1 = {1: 'Por debajo de la E.S.O', 2: 'E.S.O completa', 3: 'Grado universitario', 4:'Postgrado'}
+    options2 = {1: 'Rural', 2: 'Pueblo mediano/grande', 3: 'Ciudad'}
+    options3 = {1: 'Femenino', 2: 'Masculino', 3: 'Otro'}
+    options4 = {1: 'Yes', 2: 'No'}
+    options5 = {1: 'Diestro', 2: 'Zurdo', 3: 'Ambidiestro'}
+    options6 = {1: 'Agnóstico', 2: 'Ateo', 3: 'Budista', 4: 'Cristiano católico', 5: 'Cristiano mormón', 6: 'Cristiano Protestante', 7: 'Otro tipo de cristianismo', 8: 'Hindú', 9: 'Judío', 10: 'Musulmán', 11: 'Sikh', 12: 'Otro'}
+
+
+    dmg = {
+        "education": st.radio("¿Qué nivel educacional tienes completo?",options=options1.values(), index=0, horizontal=True),
+        "urban": st.radio("¿En qué tipo de area te criaste de pequeño?", options=options2.values(), index=0, horizontal=True),
+        "gender": st.radio("¿Con qué género te identificas?", options=options3.values(), index=0, horizontal=True),
+        "engant": st.radio("¿Eres hablante de inglés nativo?", options=options4.values(), index=0, horizontal=True),
+        "age": st.slider("Por favor, indique su edad:", min_value=18, max_value=100, value=25, step=1),
+        "hand": st.radio("¿Cual es tu mano predominante?", options=options5.values(), index=0, horizontal=True),
+        "religion": st.radio("¿Eres creyente?", options=options6.values(), index=0, horizontal=True)}			
+
+    return dmg
+
+
+
 
 
 if __name__ == "__main__":
