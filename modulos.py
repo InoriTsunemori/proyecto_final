@@ -60,7 +60,7 @@ def main():
     
             tipi()
     
-
+#----------------------------DEMOGRAPHIC--------------------------------------
         with tab3:
             
             st.subheader('Datos del entorno y desarrollo personal.')
@@ -157,9 +157,14 @@ def demographic():
     options1 = {1: 'Por debajo de la E.S.O', 2: 'E.S.O completa', 3: 'Grado universitario', 4:'Postgrado'}
     options2 = {1: 'Rural', 2: 'Pueblo mediano/grande', 3: 'Ciudad'}
     options3 = {1: 'Femenino', 2: 'Masculino', 3: 'Otro'}
-    options4 = {1: 'Yes', 2: 'No'}
+    options4 = {1: 'Si', 2: 'No'}
     options5 = {1: 'Diestro', 2: 'Zurdo', 3: 'Ambidiestro'}
     options6 = {1: 'Agnóstico', 2: 'Ateo', 3: 'Budista', 4: 'Cristiano católico', 5: 'Cristiano mormón', 6: 'Cristiano Protestante', 7: 'Otro tipo de cristianismo', 8: 'Hindú', 9: 'Judío', 10: 'Musulmán', 11: 'Sikh', 12: 'Otro'}
+    options7 = {1: 'Heterosexual', 2:'Bisexual', 3: 'Homosexual', 4: 'Asexual', 5: 'Otros'}
+    options8 = {1: 'Asiático', 2: 'Árabe', 3: 'Negro', 4: 'Indígena Australiano', 5: 'Nativo Americano', 6: 'Caucásico', 0: 'Otro'}
+    options9 = {1: 'Soltero', 2: 'Casado', 3: 'Divorciado'}
+
+
 
 
     dmg = {
@@ -169,8 +174,14 @@ def demographic():
         "engant": st.radio("¿Eres hablante de inglés nativo?", options=options4.values(), index=0, horizontal=True),
         "age": st.slider("Por favor, indique su edad:", min_value=18, max_value=100, value=25, step=1),
         "hand": st.radio("¿Cual es tu mano predominante?", options=options5.values(), index=0, horizontal=True),
-        "religion": st.radio("¿Eres creyente?", options=options6.values(), index=0, horizontal=True)}			
-
+        "religion": st.radio("¿Eres creyente?", options=options6.values(), index=0, horizontal=True),		
+        "orientation": st.radio('¿Cual es tu orientación sexual?', options=options7.values(), index=0, horizontal=True),
+        "race": st.radio("¿Cual es tu origen étnico?", options=options8.values(), index=0, horizontal=True),
+        "voted": st.radio("¿Has votado en las últimas elecciones?", options=options4.values(), index=0, horizontal=True),
+        "married": st.radio("¿Cual es tu estado civil?", options=options9.values(), index=0, horizontal=True),
+        "familiysize": st.slider("Incluyéndote a ti mismo, ¿cuántos hijos tuvo tu madre?", min_value=1, max_value=15, value=1, step=1),
+        "major": st.text_input("Si has terminado una carrera universitaria, ¿Cuál fué tu rama? (por ejemplo: Psicología, Ingeniería, Historia, Medicina...)", max_chars=15)}
+    
     return dmg
 
 
