@@ -1,154 +1,80 @@
 import streamlit as st 
-import streamlit.components.v1 as components
 import pandas as pd
 
-def main():
-
-    st.title("Proyecto Final: Cuestionario Dass")
-
-    st.text("Este cuestionario es totalmente voluntario y anónimo.\n"
-            "Los datos facilitados serán utilizados únicamente con fines didácticos,\n"
-            "como parte de un proyecto de análisis de datos.\n"
-            "No serán difundidos ni publicados ningún tipo de dato personal.\n"
-            "\n"
-            "Gracias por participar")
-    
-    
-
-    tab1, tab2, tab3 = st.tabs(["Escala de Beck", "Tipi", "Datos demográficos"])
-    
-
-    #-----------------------------------ESCALA BECK---------------------------------
-    with tab1:
-
-        st.subheader("Escala de Beck sobre ansiedad, estrés y depresión")
-
-        st.text("\n"
-            "Por favor, lea atentamente y marque la respuesta,\n"
-            "indicando cual de estas afirmaciones definiría mejor su última semana. \n"
-            "No hay respuestas correctas o incorrectas. \n"
-            "Trate de no gastar mucho tiempo en la respuesta a cada afirmación. \n"
-            "\n")
-    
-        st.subheader("La escala de calificación es la siguiente: \n")
-
-        st.text("0  No me aplica en lo absoluto. \n"
-            "1  Me aplica en cierta medida, o algunas veces. \n"
-            "2  Me aplica considerablemente, o buena parte del tiempo. \n"
-            "3  Me aplica mucho, o la mayoría de las veces. \n"
-            "\n")
-        qwerys()
-    
-    #-----------------------TIPI------------------------------------
-        with tab2:
-        
-            st.subheader('TIPI, inventario de la personalidad de 10 ítems')
-
-            st.text("El siguiente inventario es para hacer una clasificación de personalidad.")
-            st.text("Los ítems del Tipi se califican de la siguiente manera: \n"
-                      "Estoy (Puntuación) en que soy:________")
-    
-
-            st.text("Puntuación:\n"
-                    "1 = Muy en desacuerdo.\n"
-                    "2 = Moderadamente en desacuerdo.\n"
-                    "3 = Un poco en desacuerdo.\n"
-                    "4 = Ni de acuerdo ni en desacuerdo.\n"
-                    "5 = Un poco de acuerdo.\n"
-                    "6 = Moderadamente de acuerdo.\n"
-                    "7 = Muy de acuerdo.")
-    
-            tipi()
-    
-#----------------------------DEMOGRAPHIC--------------------------------------
-        with tab3:
-            
-            st.subheader('Datos del entorno y desarrollo personal.')
-            st.text('Por favor, rellena los siguientes campos con datos lo más verídicos posible.')
-
-            demographic()
-
 def tipi():
-    st.subheader('TIPI, inventario de la personalidad de 10 ítems')
 
-    st.text("El siguiente inventario es para hacer una clasificación de personalidad.")
-    st.text("Los ítems del Tipi se califican de la siguiente manera: \n"
-            "Estoy (Puntuación) en que soy:________")
+    options={1 : 'Muy en desacuerdo',
+            2 : 'Moderadamente en desacuerdo',
+            3 : 'Un poco en desacuerdo',
+            4 : 'Ni de acuerdo ni en desacuerdo',
+            5 : 'Un poco de acuerdo',
+            6 : 'Moderadamente de acuerdo',
+            7 : 'Totalmente de acuerdo'}
     
-
-    st.text("Puntuación:\n"
-            "1 = Muy en desacuerdo.\n"
-            "2 = Moderadamente en desacuerdo.\n"
-            "3 = Un poco en desacuerdo.\n"
-            "4 = Ni de acuerdo ni en desacuerdo.\n"
-            "5 = Un poco de acuerdo.\n"
-            "6 = Moderadamente de acuerdo.\n"
-            "7 = Muy de acuerdo.")
-
-    options = [1, 2, 3, 4, 5, 6, 7]
     items = {
-        "TIPI1"  : st.radio("Extravertido, entusiasta", options=options, index=0, horizontal=True),
-        "TIPI2"  : st.radio("Críticón, peleón", options=options, index=0, horizontal=True),
-        "TIPI3"  : st.radio("Confiable, con autocontrol", options=options, index=0, horizontal=True),
-        "TIPI4"  : st.radio("Ansioso, irascible", options=options, index=0, horizontal=True),
-        "TIPI5"  : st.radio("Abierto a nuevas experiencias, intereses variados", options=options, index=0, horizontal=True),
-        "TIPI6"  : st.radio("Reservado, callado", options=options, index=0, horizontal=True),
-        "TIPI7"  : st.radio("Simpático, cálido", options=options, index=0, horizontal=True),
-        "TIPI8"  : st.radio("Desorganizado, descuidado", options=options, index=0, horizontal=True),
-        "TIPI9"  : st.radio("Calmado, emocionalmente estable", options=options, index=0, horizontal=True),
-        "TIPI10" : st.radio("Convencional, poco creativo", options=options, index=0, horizontal=True)}
+        "TIPI1"  : st.selectbox("Extravertido, entusiasta", options=options.values()),
+        "TIPI2"  : st.selectbox("Críticón, peleón", options=options.values()),
+        "TIPI3"  : st.selectbox("Confiable, con autocontrol", options=options.values()),
+        "TIPI4"  : st.selectbox("Ansioso, irascible", options=options.values()),
+        "TIPI5"  : st.selectbox("Abierto a nuevas experiencias, intereses variados", options=options.values()),
+        "TIPI6"  : st.selectbox("Reservado, callado", options=options.values()),
+        "TIPI7"  : st.selectbox("Simpático, cálido", options=options.values()),
+        "TIPI8"  : st.selectbox("Desorganizado, descuidado", options=options.values()),
+        "TIPI9"  : st.selectbox("Calmado, emocionalmente estable", options=options.values()),
+        "TIPI10" : st.selectbox("Convencional, poco creativo", options=options.values())}
     
     return items
 
-
-
 def qwerys():
 
-    options = [0, 1, 2, 3]
+    options= {0 : 'Ninguna vez',
+              1 : 'Algunas pocas veces',
+              2 : 'Bastantes veces',
+              3 : 'Todos o la mayoría de los días'}
 
     qw = {
-        "Q1" : st.radio("1 - Me he sentido molesto por cosas triviales", options=options, index=0, horizontal=True),
-        "Q2" : st.radio("2 - He notado la boca seca", options=options, index=0, horizontal=True),
-        "Q3" : st.radio("3 - Me ha costado mucho experimentar algún tipo de sentimientos positivos", options=options, index=0, horizontal=True),
-        "Q4" : st.radio("4 - Experimenté dificultad para respirar (por ejemplo: respiración excesivamente rápida, falta de aire en ausencia de esfuerzo físico)", options=options, index=0, horizontal=True),
-        "Q5" : st.radio("5 - He sentido que simplemente no podía continuar", options=options, index=0, horizontal=True),
-        "Q6" : st.radio("6 - Tendía a reaccionar desmesuradamente a situaciones que no lo merecían", options=options, index=0, horizontal=True),
-        "Q7" : st.radio("7 - He tenido sensación de temblores (por ejemplo: no me reaccionaban bien las extremidades)", options=options, index=0, horizontal=True),
-        "Q8" : st.radio("8 - He tenido dificultades para relajarme/desconectar", options=options, index=0, horizontal=True),
-        "Q9" : st.radio("9 - Me encontré en situaciones que me hacían sentir tan ansioso que he sentido alivio cuando estas han terminado", options=options, index=0, horizontal=True),
-        "Q10": st.radio("10 - Sentí que no tenía nada por lo cual levantarme", options=options, index=0, horizontal=True),
-        "Q11": st.radio("11 - Me he molestado con bastante facilidad", options=options, index=0, horizontal=True),
-        "Q12": st.radio("12 - Sentí que utilicé demasiada energía", options=options, index=0, horizontal=True),
-        "Q13": st.radio("13 - Me sentí triste y deprimido", options=options, index=0, horizontal=True),
-        "Q14": st.radio("14 - Me encontré impaciente cuando tuve alguna demora (por ejemplo: tráfico, citas, filas, esperas)", options=options, index=0, horizontal=True),
-        "Q15": st.radio("15 - Tuve momentos de debilidad", options=options, index=0, horizontal=True),
-        "Q16": st.radio("16 - Sentí que perdí el interés en prácticamente todo", options=options, index=0, horizontal=True),
-        "Q17": st.radio("17 - Sentí que no valía mucho como persona", options=options, index=0, horizontal=True),
-        "Q18": st.radio("18 - Me sentí bastante sensible", options=options, index=0, horizontal=True),
-        "Q19": st.radio("19 - Sudaba de forma notable (por ejemplo: sudor en las manos) en ausencia de temperaturas altas o desgaste físico", options=options, index=0, horizontal=True),
-        "Q20": st.radio("20 - Sentí miedo sin una buena razón", options=options, index=0, horizontal=True),
-        "Q21": st.radio("21 - Pensé que la vida no valía la pena", options=options, index=0, horizontal=True),
-        "Q22": st.radio("22 - Me resultó difícil relajarme", options=options, index=0, horizontal=True),
-        "Q23": st.radio("23 - Tuve dificultades para tragar", options=options, index=0, horizontal=True),
-        "Q24": st.radio("24 - No pude disfrutar de las cosas que hice", options=options, index=0, horizontal=True),
-        "Q25": st.radio("25 - Fui consciente del latido de mi corazón en ausencia de esfuerzo (por ejemplo, aumento de la frecuencia cardiaca)", options=options, index=0, horizontal=True),
-        "Q26": st.radio("26 - Me sentí afligido y desanimado", options=options, index=0, horizontal=True),
-        "Q27": st.radio("27 - Estaba muy irritable", options=options, index=0, horizontal=True),
-        "Q28": st.radio("28 - Estuve cerca de entrar en pánico", options=options, index=0, horizontal=True),
-        "Q29": st.radio("29 - Me resultó difícil calmarme después de molestarme por algo", options=options, index=0, horizontal=True),
-        "Q30": st.radio("30 - Temía que me superara alguna tarea trivial pero desconocida para mí", options=options, index=0, horizontal=True),
-        "Q31": st.radio("31 - Nada me generaba entusiasmo", options=options, index=0, horizontal=True),
-        "Q32": st.radio("32 - Me resultó difícil tolerar interrupciones en lo que estaba haciendo", options=options, index=0, horizontal=True),
-        "Q33": st.radio("33 - Me encontraba en un estado de tensión y nervios", options=options, index=0, horizontal=True),
-        "Q34": st.radio("34 - Sentí que era bastante inútil", options=options, index=0, horizontal=True),
-        "Q35": st.radio("35 - No toleraba nada que me impidiera continuar con lo que estaba haciendo", options=options, index=0, horizontal=True),
-        "Q36": st.radio("36 - Me sentí aterrorizado", options=options, index=0, horizontal=True),
-        "Q37": st.radio("37 - No veía nada en el futuro con lo que tener esperanza", options=options, index=0, horizontal=True),
-        "Q38": st.radio("38 - Sentí que la vida no tenía sentido", options=options, index=0, horizontal=True),
-        "Q39": st.radio("39 - Me sentí agitado", options=options, index=0, horizontal=True),
-        "Q40": st.radio("40 - Me preocupaban situaciones en las que podría entrar en pánico y hacer el ridículo", options=options, index=0, horizontal=True),
-        "Q41": st.radio("41 - Experimenté temblores (por ejemplo: en las manos)", options=options, index=0, horizontal=True),
-        "Q42": st.radio("42 - Me resultaba difícil reunir iniciativa o motivación para hacer las cosas", options=options, index=0, horizontal=True)}
+        "Q1" : st.selectbox("1 - Me he sentido molesto por cosas triviales", options=options.values()),
+        "Q2" : st.selectbox("2 - He notado la boca seca", options=options.values()),
+        "Q3" : st.selectbox("3 - Me ha costado mucho experimentar algún tipo de sentimientos positivos", options=options.values()),
+        "Q4" : st.selectbox("4 - Experimenté dificultad para respirar (por ejemplo: respiración excesivamente rápida, falta de aire en ausencia de esfuerzo físico)", options=options.values()),
+        "Q5" : st.selectbox("5 - He sentido que simplemente no podía continuar", options=options.values()),
+        "Q6" : st.selectbox("6 - Tendía a reaccionar desmesuradamente a situaciones que no lo merecían", options=options.values()),
+        "Q7" : st.selectbox("7 - He tenido sensación de temblores (por ejemplo: no me reaccionaban bien las extremidades)", options=options.values()),
+        "Q8" : st.selectbox("8 - He tenido dificultades para relajarme/desconectar", options=options.values()),
+        "Q9" : st.selectbox("9 - Me encontré en situaciones que me hacían sentir tan ansioso que he sentido alivio cuando estas han terminado", options=options.values()),
+        "Q10": st.selectbox("10 - Sentí que no tenía nada por lo cual levantarme", options=options.values()),
+        "Q11": st.selectbox("11 - Me he molestado con bastante facilidad", options=options.values()),
+        "Q12": st.selectbox("12 - Sentí que utilicé demasiada energía", options=options.values()),
+        "Q13": st.selectbox("13 - Me sentí triste y deprimido", options=options.values()),
+        "Q14": st.selectbox("14 - Me encontré impaciente cuando tuve alguna demora (por ejemplo: tráfico, citas, filas, esperas)", options=options.values()),
+        "Q15": st.selectbox("15 - Tuve momentos de debilidad", options=options.values()),
+        "Q16": st.selectbox("16 - Sentí que perdí el interés en prácticamente todo", options=options.values()),
+        "Q17": st.selectbox("17 - Sentí que no valía mucho como persona", options=options.values()),
+        "Q18": st.selectbox("18 - Me sentí bastante sensible", options=options.values()),
+        "Q19": st.selectbox("19 - Sudaba de forma notable (por ejemplo: sudor en las manos) en ausencia de temperaturas altas o desgaste físico", options=options.values()),
+        "Q20": st.selectbox("20 - Sentí miedo sin una buena razón", options=options.values()),
+        "Q21": st.selectbox("21 - Pensé que la vida no valía la pena", options=options.values()),
+        "Q22": st.selectbox("22 - Me resultó difícil relajarme", options=options.values()),
+        "Q23": st.selectbox("23 - Tuve dificultades para tragar", options=options.values()),
+        "Q24": st.selectbox("24 - No pude disfrutar de las cosas que hice", options=options.values()),
+        "Q25": st.selectbox("25 - Fui consciente del latido de mi corazón en ausencia de esfuerzo (por ejemplo, aumento de la frecuencia cardiaca)", options=options.values()),
+        "Q26": st.selectbox("26 - Me sentí afligido y desanimado", options=options.values()),
+        "Q27": st.selectbox("27 - Estaba muy irritable", options=options.values()),
+        "Q28": st.selectbox("28 - Estuve cerca de entrar en pánico", options=options.values()),
+        "Q29": st.selectbox("29 - Me resultó difícil calmarme después de molestarme por algo", options=options.values()),
+        "Q30": st.selectbox("30 - Temía que me superara alguna tarea trivial pero desconocida para mí", options=options.values()),
+        "Q31": st.selectbox("31 - Nada me generaba entusiasmo", options=options.values()),
+        "Q32": st.selectbox("32 - Me resultó difícil tolerar interrupciones en lo que estaba haciendo", options=options.values()),
+        "Q33": st.selectbox("33 - Me encontraba en un estado de tensión y nervios", options=options.values()),
+        "Q34": st.selectbox("34 - Sentí que era bastante inútil", options=options.values()),
+        "Q35": st.selectbox("35 - No toleraba nada que me impidiera continuar con lo que estaba haciendo", options=options.values()),
+        "Q36": st.selectbox("36 - Me sentí aterrorizado", options=options.values()),
+        "Q37": st.selectbox("37 - No veía nada en el futuro con lo que tener esperanza", options=options.values()),
+        "Q38": st.selectbox("38 - Sentí que la vida no tenía sentido", options=options.values()),
+        "Q39": st.selectbox("39 - Me sentí agitado", options=options.values()),
+        "Q40": st.selectbox("40 - Me preocupaban situaciones en las que podría entrar en pánico y hacer el ridículo", options=options.values()),
+        "Q41": st.selectbox("41 - Experimenté temblores (por ejemplo: en las manos)", options=options.values()),
+        "Q42": st.selectbox("42 - Me resultaba difícil reunir iniciativa o motivación para hacer las cosas", options=options.values())}
 
     return qw
 
@@ -165,18 +91,16 @@ def demographic():
     options9 = {1: 'Soltero', 2: 'Casado', 3: 'Divorciado'}
 
 
-
-
     dmg = {
-        "education": st.radio("¿Qué nivel educacional tienes completo?",options=options1.values(), index=0, horizontal=True),
+        "education": st.selectbox("¿Qué nivel educacional tienes completo?",options=options1.values()),
         "urban": st.radio("¿En qué tipo de area te criaste de pequeño?", options=options2.values(), index=0, horizontal=True),
         "gender": st.radio("¿Con qué género te identificas?", options=options3.values(), index=0, horizontal=True),
         "engant": st.radio("¿Eres hablante de inglés nativo?", options=options4.values(), index=0, horizontal=True),
         "age": st.slider("Por favor, indique su edad:", min_value=18, max_value=100, value=25, step=1),
         "hand": st.radio("¿Cual es tu mano predominante?", options=options5.values(), index=0, horizontal=True),
-        "religion": st.radio("¿Eres creyente?", options=options6.values(), index=0, horizontal=True),		
-        "orientation": st.radio('¿Cual es tu orientación sexual?', options=options7.values(), index=0, horizontal=True),
-        "race": st.radio("¿Cual es tu origen étnico?", options=options8.values(), index=0, horizontal=True),
+        "religion": st.selectbox("¿Eres creyente?", options=options6.values()),		
+        "orientation": st.selectbox('¿Cual es tu orientación sexual?', options=options7.values()),
+        "race": st.selectbox("¿Cual es tu origen étnico?", options=options8.values()),
         "voted": st.radio("¿Has votado en las últimas elecciones?", options=options4.values(), index=0, horizontal=True),
         "married": st.radio("¿Cual es tu estado civil?", options=options9.values(), index=0, horizontal=True),
         "familiysize": st.slider("Incluyéndote a ti mismo, ¿cuántos hijos tuvo tu madre?", min_value=1, max_value=15, value=1, step=1),
@@ -184,7 +108,79 @@ def demographic():
     
     return dmg
 
+def menu():
 
+    side=st.sidebar
+
+
+
+def main():
+
+    st.set_page_config(
+        page_title="Proyecto DASS",
+        page_icon=":star:",
+        layout="wide",
+        initial_sidebar_state="expanded")
+
+    st.title("Proyecto Final: Cuestionario Dass")
+
+    st.text("Este cuestionario es totalmente voluntario y anónimo.\n"
+            "Los datos facilitados serán utilizados únicamente con fines didácticos,\n"
+            "como parte de un proyecto de análisis de datos.\n"
+            "No serán difundidos ni publicados ningún tipo de dato personal.\n"
+            "\n"
+            "Gracias por participar")
+    
+    
+
+    tab1, tab2, tab3 = st.tabs(["Escala de Beck", "Tipi", "Datos demográficos"])
+    
+
+    st.sidebar.title("Configuración")
+    st.sidebar.markdown("Ajustes del Cuestionario")
+
+    # Agregar Widgets al Sidebar
+    option = st.sidebar.selectbox('Seleccione una opción:', ['Opción 1', 'Opción 2', 'Opción 3'])
+    value = st.sidebar.slider('Seleccione un rango:', min_value=0, max_value=100, value=(25, 75))
+    text_input = st.sidebar.text_input('Ingrese su nombre:')
+    button = st.sidebar.button('Enviar')
+
+    with st.sidebar.expander("Configuraciones Avanzadas"):
+        advanced_option = st.selectbox('Seleccione una opción avanzada:', ['Avanzada 1', 'Avanzada 2'])
+        st.slider('Ajuste avanzado:', 0, 100, 50)
+
+
+    #-----------------------------------ESCALA BECK---------------------------------
+    with tab1:
+
+        st.subheader("Escala de Beck sobre ansiedad, estrés y depresión")
+
+        st.markdown(
+            "Por favor, lea atentamente y marque la respuesta,"
+            "indicando cual de estas afirmaciones definiría mejor su **_última semana_**.  \n"
+            "No hay respuestas correctas o incorrectas.  \n"
+            "Trate de no gastar mucho tiempo en la respuesta a cada afirmación.  \n")
+    
+        qwerys()
+    
+    #-----------------------TIPI------------------------------------
+        with tab2:
+
+            st.subheader('TIPI, inventario de la personalidad de 10 ítems')
+
+            st.markdown("El siguiente inventario es para hacer una clasificación de personalidad.")
+            st.markdown("Los ítems del Tipi se califican de la siguiente manera:  \n"
+                    "Estoy ('_selección_') en que soy:________")
+            
+            tipi()
+    
+#----------------------------DEMOGRAPHIC--------------------------------------
+        with tab3:
+            
+            st.subheader('Datos del entorno y desarrollo personal.')
+            st.markdown('Por favor, rellena los siguientes campos con datos lo más verídicos posible.')
+
+            demographic()
 
 
 
