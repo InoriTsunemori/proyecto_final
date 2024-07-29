@@ -28,7 +28,7 @@ def tipi():
 def qwerys():
 
     options= {0 : 'Ninguna vez',
-              1 : 'Algunas pocas veces',
+              1 : 'En ciertas ocasiones',
               2 : 'Bastantes veces',
               3 : 'Todos o la mayoría de los días'}
 
@@ -122,7 +122,7 @@ def main():
         layout="wide",
         initial_sidebar_state="expanded")
 
-    st.title("Proyecto Final: Cuestionario Dass")
+    st.title(":violet[Proyecto Final: Cuestionario Dass]")
 
     st.text("Este cuestionario es totalmente voluntario y anónimo.\n"
             "Los datos facilitados serán utilizados únicamente con fines didácticos,\n"
@@ -153,7 +153,7 @@ def main():
     #-----------------------------------ESCALA BECK---------------------------------
     with tab1:
 
-        st.subheader("Escala de Beck sobre ansiedad, estrés y depresión")
+        st.subheader(":blue[Escala de Beck sobre ansiedad, estrés y depresión]")
 
         st.markdown(
             "Por favor, lea atentamente y marque la respuesta,"
@@ -166,7 +166,7 @@ def main():
     #-----------------------TIPI------------------------------------
         with tab2:
 
-            st.subheader('TIPI, inventario de la personalidad de 10 ítems')
+            st.subheader(':blue[TIPI, inventario de la personalidad de 10 ítems]')
 
             st.markdown("El siguiente inventario es para hacer una clasificación de personalidad.")
             st.markdown("Los ítems del Tipi se califican de la siguiente manera:  \n"
@@ -177,7 +177,7 @@ def main():
 #----------------------------DEMOGRAPHIC--------------------------------------
         with tab3:
             
-            st.subheader('Datos del entorno y desarrollo personal.')
+            st.subheader(':blue[Datos del entorno y desarrollo personal]')
             st.markdown('Por favor, rellena los siguientes campos con datos lo más verídicos posible.')
 
             demographic()

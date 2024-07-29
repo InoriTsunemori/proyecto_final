@@ -1,4 +1,7 @@
-entorno_virtual/
+venv/
 *.csv
+recordatorios/
+.streamlit/
+.vscode/
 
 
