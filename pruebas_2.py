@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import io
 import os
+from funciones import *
 
 def tipi():
 
@@ -12,7 +13,6 @@ def tipi():
             5 : 'Un poco de acuerdo',
             6 : 'Moderadamente de acuerdo',
             7 : 'Totalmente de acuerdo'}
-    options_reverse = {v: k for k, v in options.items()}
 
     tp = {
         "TIPI1"  : st.selectbox("Extravertido, entusiasta", options=options.values()),
@@ -26,7 +26,7 @@ def tipi():
         "TIPI9"  : st.selectbox("Calmado, emocionalmente estable", options=options.values()),
         "TIPI10" : st.selectbox("Convencional, poco creativo", options=options.values())}
     
-    tipi_response = {key: options_reverse[value] for key, value in tp.items()}
+    tipi_response = reverse(options,tp)
 
     return tipi_response
 
@@ -36,8 +36,6 @@ def qwerys():
               1 : 'En ciertas ocasiones',
               2 : 'Bastantes veces',
               3 : 'Todos o la mayoría de los días'}
-
-    options_reverse = {v: k for k, v in options.items()}
 
     qw = {
         "Q1" : st.selectbox("1 - Me he sentido molesto por cosas triviales", options=options.values()),
@@ -83,8 +81,7 @@ def qwerys():
         "Q41": st.selectbox("41 - Experimenté temblores (por ejemplo: en las manos)", options=options.values()),
         "Q42": st.selectbox("42 - Me resultaba difícil reunir iniciativa o motivación para hacer las cosas", options=options.values())}
     
-    qwery_response = {key: options_reverse[value] for key, value in qw.items()}
-
+    qwery_response=reverse(options,qw)
     print(qwery_response)
 
     return qwery_response
@@ -100,28 +97,47 @@ def demographic():
     options7 = {1: 'Heterosexual', 2:'Bisexual', 3: 'Homosexual', 4: 'Asexual', 5: 'Otros'}
     options8 = {1: 'Asiático', 2: 'Árabe', 3: 'Negro', 4: 'Indígena Australiano', 5: 'Nativo Americano', 6: 'Caucásico', 0: 'Otro'}
     options9 = {1: 'Soltero', 2: 'Casado', 3: 'Divorciado'}
-
+    options10 = {1: 'Ciencias', 2: 'Ciencias de la salud', 3: 'Empresariales', 4: 'Ingeniería', 5: 'Humanidades y letras', 6: 'Arte', 7: 'Tecnología', 8: 'IT', 9: 'Turismo', 10: 'Otros'}
 
     dmg = {
         "education": st.selectbox("¿Qué nivel educacional tienes completo?",options=options1.values()),
-        "urban": st.radio("¿En qué tipo de area te criaste de pequeño?", options=options2.values(), index=0, horizontal=True),
-        "gender": st.radio("¿Con qué género te identificas?", options=options3.values(), index=0, horizontal=True),
-        "engant": st.radio("¿Eres hablante de inglés nativo?", options=options4.values(), index=0, horizontal=True),
+        "urban": st.selectbox("¿En qué tipo de area te criaste de pequeño?", options=options2.values()),
+        "gender": st.selectbox("¿Con qué género te identificas?", options=options3.values()),
+        "engant": st.selectbox("¿Eres hablante de inglés nativo?", options=options4.values()),
         "age": st.slider("Por favor, indique su edad:", min_value=18, max_value=100, value=25, step=1),
-        "hand": st.radio("¿Cual es tu mano predominante?", options=options5.values(), index=0, horizontal=True),
+        "hand": st.selectbox("¿Cual es tu mano predominante?", options=options5.values()),
         "religion": st.selectbox("¿Eres creyente?", options=options6.values()),		
         "orientation": st.selectbox('¿Cual es tu orientación sexual?', options=options7.values()),
         "race": st.selectbox("¿Cual es tu origen étnico?", options=options8.values()),
-        "voted": st.radio("¿Has votado en las últimas elecciones?", options=options4.values(), index=0, horizontal=True),
-        "married": st.radio("¿Cual es tu estado civil?", options=options9.values(), index=0, horizontal=True),
+        "voted": st.selectbox("¿Has votado en las últimas elecciones?", options=options4.values()),
+        "married": st.selectbox("¿Cual es tu estado civil?", options=options9.values()),
         "familiysize": st.slider("Incluyéndote a ti mismo, ¿cuántos hijos tuvo tu madre?", min_value=1, max_value=15, value=1, step=1),
-        "major": st.text_input("Si has terminado una carrera universitaria, ¿Cuál fué tu rama? (por ejemplo: Psicología, Ingeniería, Historia, Medicina...)", max_chars=15)}
+        "major": st.selectbox("Si has terminado una carrera universitaria, ¿Cuál fué tu rama? (por ejemplo: Psicología, Ingeniería, Historia, Medicina...)", options=options10.values())}
     
+    options_ = [options1, options2, options3, options4, options5, options6, options7, options8, options9, options10]
+
+    dmg_responses=[]
+
+    for opt in options_: 
+        response=reverse(opt, None)
+        dmg_responses.append(response)
+
+        print('-------------------------PRINT3',dmg_responses)
     return dmg
 
-def menu():
+def Escala():
+        
+    st.subheader(":blue[Escala de Beck sobre ansiedad, estrés y depresión]")
+    st.markdown(
+        "Por favor, lea atentamente y marque la respuesta,"
+        "indicando cual de estas afirmaciones definiría mejor su **_última semana_**.  \n"
+        "No hay respuestas correctas o incorrectas.  \n"
+        "Trate de no gastar mucho tiempo en la respuesta a cada afirmación.  \n")
+    
+    b=qwerys()
+    response1 = pd.DataFrame([b])
+    st.success('Respuestas completas, pase a la pestaña TIPI para continuar el cuestionario')
 
-    side=st.sidebar
 
 def create_csv_file(data):
     # Define el directorio y el nombre del archivo
@@ -151,7 +167,12 @@ def main():
         initial_sidebar_state="expanded")
 
     
+    st.sidebar.title('Menu')
+    pagina = st.sidebar.selectbox('Selecciona una pagina',['Escala de Beck','TIPI','Demográficos'])
 
+    if pagina == 'Escala de Beck':
+        Escala()
+        
     st.title(":violet[Proyecto Final: Cuestionario Dass]")
 
     st.text("Este cuestionario es totalmente voluntario y anónimo.\n"
