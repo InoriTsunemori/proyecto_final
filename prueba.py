@@ -6,7 +6,7 @@ from funciones import *
 
 def tipi():
 
-    options={
+    options = {
         1 : 'Muy en desacuerdo',
         2 : 'Moderadamente en desacuerdo',
         3 : 'Un poco en desacuerdo',
