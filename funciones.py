@@ -32,9 +32,9 @@ def reverse(options,dicc):
     return response
 
 
-
-
-
+def reverse_demog(options):
+    options = {v: k for k, v in options.items()}
+    return options
 
 
 if __name__=='__main__':

@@ -4,6 +4,7 @@ import io
 import os
 from funciones import *
 
+
 def tipi():
 
     options={1 : 'Muy en desacuerdo',
@@ -111,21 +112,40 @@ def demographic():
         "race": st.selectbox("¿Cual es tu origen étnico?", options=options8.values()),
         "voted": st.selectbox("¿Has votado en las últimas elecciones?", options=options4.values()),
         "married": st.selectbox("¿Cual es tu estado civil?", options=options9.values()),
-        "familiysize": st.slider("Incluyéndote a ti mismo, ¿cuántos hijos tuvo tu madre?", min_value=1, max_value=15, value=1, step=1),
+        "familysize": st.slider("Incluyéndote a ti mismo, ¿cuántos hijos tuvo tu madre?", min_value=1, max_value=15, value=1, step=1),
         "major": st.selectbox("Si has terminado una carrera universitaria, ¿Cuál fué tu rama? (por ejemplo: Psicología, Ingeniería, Historia, Medicina...)", options=options10.values())}
     
-    options_ = [options1, options2, options3, options4, options5, options6, options7, options8, options9, options10]
+    
+    options1_reverse = {v: k for k, v in options1.items()}
+    options2_reverse = {v: k for k, v in options2.items()}
+    options3_reverse = {v: k for k, v in options3.items()}
+    options4_reverse = {v: k for k, v in options4.items()}
+    options5_reverse = {v: k for k, v in options5.items()}
+    options6_reverse = {v: k for k, v in options6.items()}
+    options7_reverse = {v: k for k, v in options7.items()}
+    options8_reverse = {v: k for k, v in options8.items()}
+    options9_reverse = {v: k for k, v in options9.items()}
+    options10_reverse = {v: k for k, v in options10.items()}
 
-    dmg_responses=[]
+    dmg_responses = {
+        "education": options1_reverse[dmg["education"]],
+        "urban": options2_reverse[dmg["urban"]],
+        "gender": options3_reverse[dmg["gender"]],
+        "engant": options4_reverse[dmg["engant"]],
+        "hand": options5_reverse[dmg["hand"]],
+        "religion": options6_reverse[dmg["religion"]],
+        "orientation": options7_reverse[dmg["orientation"]],
+        "race": options8_reverse[dmg["race"]],
+        "voted": options4_reverse[dmg["voted"]],
+        "married": options9_reverse[dmg["married"]],
+        "major": options10_reverse[dmg["major"]],
+        "age": dmg["age"],
+        "familysize": dmg["familysize"]
+    }
 
-    for opt in options_: 
-        response=reverse(opt, None)
-        dmg_responses.append(response)
+    return dmg_responses
 
-        print('-------------------------PRINT3',dmg_responses)
-    return dmg
-
-def Escala():
+def escala_beck():
         
     st.subheader(":blue[Escala de Beck sobre ansiedad, estrés y depresión]")
     st.markdown(
@@ -134,30 +154,41 @@ def Escala():
         "No hay respuestas correctas o incorrectas.  \n"
         "Trate de no gastar mucho tiempo en la respuesta a cada afirmación.  \n")
     
-    b=qwerys()
-    response1 = pd.DataFrame([b])
-    st.success('Respuestas completas, pase a la pestaña TIPI para continuar el cuestionario')
+    responses = qwerys()
+    st.session_state.response1 = pd.DataFrame([responses])
+    st.success('Una vez que termine, pase a la pestaña TIPI para continuar el cuestionario')
 
+def ten_items():
 
-def create_csv_file(data):
-    # Define el directorio y el nombre del archivo
-    DIRECTORIO_CSV = r'C:\Users\BORJA\OneDrive\Escritorio\HAB2\Proyecto_final\respuestas'
-    NOMBRE_ARCHIVO = "respuestas_cuestionario.csv"
+    st.subheader(':blue[TIPI, inventario de la personalidad de 10 ítems]')
+    st.markdown("El siguiente inventario es para hacer una clasificación de personalidad.")
+    st.markdown("Los ítems del Tipi se califican de la siguiente manera:  \n"
+            "Estoy ('_selección_') en que soy:________")
     
-    if not os.path.exists(DIRECTORIO_CSV):
-        os.makedirs(DIRECTORIO_CSV)
+    responses = tipi()
+    st.session_state.response2 = pd.DataFrame([responses])
+    st.success('Una vez que termine, pase a la pestaña Demograficos para terminar el cuestionario')
+
+def demog():
+            
+    st.subheader(':blue[Datos del entorno y desarrollo personal]')
+    st.markdown('Por favor, rellena los siguientes campos con datos lo más verídicos posible.')
+
+    responses = demographic()
+    st.session_state.response3 = pd.DataFrame([responses])
+    st.success('Una vez que termine, envíe el cuestionario con el botón situado en el lateral')
+
+def principal():
+
+    st.title(":violet[Proyecto Final: Cuestionario Dass]")
+
+    st.text("Este cuestionario es totalmente voluntario y anónimo.\n"
+            "Los datos facilitados serán utilizados únicamente con fines didácticos,\n"
+            "como parte de un proyecto de análisis de datos.\n"
+            "No serán difundidos ni publicados ningún tipo de dato personal.\n"
+            "\n"
+            "Gracias por participar")
     
-
-    ruta_csv = os.path.join(DIRECTORIO_CSV, NOMBRE_ARCHIVO)
-    
-
-    if os.path.exists(ruta_csv):
-        
-        data.to_csv(ruta_csv, mode='a', header=False, index=False)
-    else:
-        
-        data.to_csv(ruta_csv, mode='w', header=True, index=False)
-
 def main():
 
     st.set_page_config(
@@ -168,81 +199,24 @@ def main():
 
     
     st.sidebar.title('Menu')
-    pagina = st.sidebar.selectbox('Selecciona una pagina',['Escala de Beck','TIPI','Demográficos'])
-
-    if pagina == 'Escala de Beck':
-        Escala()
-        
-    st.title(":violet[Proyecto Final: Cuestionario Dass]")
-
-    st.text("Este cuestionario es totalmente voluntario y anónimo.\n"
-            "Los datos facilitados serán utilizados únicamente con fines didácticos,\n"
-            "como parte de un proyecto de análisis de datos.\n"
-            "No serán difundidos ni publicados ningún tipo de dato personal.\n"
-            "\n"
-            "Gracias por participar")
+    pagina = st.sidebar.selectbox('Selecciona una pagina',['Seleccione una página','Escala de Beck','TIPI','Demográficos'])
     
-    
-    tabs = ["Escala de Beck", "Tipi", "Datos demográficos"]
-    tab1, tab2, tab3 = st.tabs(tabs)
+    if pagina == 'Seleccione una página':
+        principal()
+    elif pagina == 'TIPI':
+        ten_items()
+    elif pagina == 'Demográficos':
+        demog()
+    elif pagina == 'Escala de Beck':
+        escala_beck()
 
-
-    # st.sidebar.title("Configuración")
-    # st.sidebar.markdown("Ajustes del Cuestionario")
-
-    # # Agregar Widgets al Sidebar
-    # option = st.sidebar.selectbox('Seleccione una opción:', ['Opción 1', 'Opción 2', 'Opción 3'])
-    # value = st.sidebar.slider('Seleccione un rango:', min_value=0, max_value=100, value=(25, 75))
-    # text_input = st.sidebar.text_input('Ingrese su nombre:')
-    # button = st.sidebar.button('Enviar')
-
-    # with st.sidebar.expander("Configuraciones Avanzadas"):
-    #     advanced_option = st.selectbox('Seleccione una opción avanzada:', ['Avanzada 1', 'Avanzada 2'])
-    #     st.slider('Ajuste avanzado:', 0, 100, 50)
-
-
-#-----------------------------------ESCALA BECK---------------------------------
-
-    with tab1:
-        st.subheader(":blue[Escala de Beck sobre ansiedad, estrés y depresión]")
-        st.markdown(
-            "Por favor, lea atentamente y marque la respuesta,"
-            "indicando cual de estas afirmaciones definiría mejor su **_última semana_**.  \n"
-            "No hay respuestas correctas o incorrectas.  \n"
-            "Trate de no gastar mucho tiempo en la respuesta a cada afirmación.  \n")
-        
-        b=qwerys()
-        response1 = pd.DataFrame([b])
-        st.success('Respuestas completas, pase a la pestaña TIPI para continuar el cuestionario')
-
-
-#-----------------------TIPI------------------------------------
-
-    with tab2:
-        st.subheader(':blue[TIPI, inventario de la personalidad de 10 ítems]')
-        st.markdown("El siguiente inventario es para hacer una clasificación de personalidad.")
-        st.markdown("Los ítems del Tipi se califican de la siguiente manera:  \n"
-                "Estoy ('_selección_') en que soy:________")
-        
-        a=tipi()
-        response2 = pd.DataFrame([a])
-
-        st.success('Respuestas completas, pase a la pestaña Demograficos para terminar el cuestionario')
-
-#----------------------------DEMOGRAPHIC--------------------------------------
-
-    with tab3:
-            
-        st.subheader(':blue[Datos del entorno y desarrollo personal]')
-        st.markdown('Por favor, rellena los siguientes campos con datos lo más verídicos posible.')
-
-        response3=demographic()
-
-        response =pd.concat([response1, response2],axis=1)
-
-        if st.button('Enviar'):
-            create_csv_file((response))
-            st.success('Respuestas guardadas en CSV con éxito.')
+    if st.sidebar.button('Enviar cuestionario completo'):
+        if 'response1' in st.session_state and 'response2' in st.session_state and 'response3' in st.session_state:
+            combined_response = pd.concat([st.session_state.response1, st.session_state.response2, st.session_state.response3], axis = 1)
+            create_csv_file(combined_response)
+            st.success('Respuestas enviadas con éxito.')
+        else:
+            st.error('Por favor, complete las secciones anteriores antes de enviar.')
 
 if __name__ == "__main__":
     main()
