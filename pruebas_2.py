@@ -138,9 +138,6 @@ def create_csv_file(data):
         df.to_csv(ruta_csv, mode='w', header=True, index=False)
 
 
-def nueva_funcion():
-    pas
-
 def main():
 
     st.set_page_config(
@@ -236,8 +233,8 @@ def main():
             if st.button('Página anterior'):
                 st.session_state.current_tab = 1
 
-    if __name__ == "__main__":
-        main()
+if __name__ == "__main__":
+    main()
 
 
 
