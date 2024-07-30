@@ -12,8 +12,9 @@ def tipi():
             5 : 'Un poco de acuerdo',
             6 : 'Moderadamente de acuerdo',
             7 : 'Totalmente de acuerdo'}
-    
-    items = {
+    options_reverse = {v: k for k, v in options.items()}
+
+    tp = {
         "TIPI1"  : st.selectbox("Extravertido, entusiasta", options=options.values()),
         "TIPI2"  : st.selectbox("Críticón, peleón", options=options.values()),
         "TIPI3"  : st.selectbox("Confiable, con autocontrol", options=options.values()),
@@ -25,7 +26,9 @@ def tipi():
         "TIPI9"  : st.selectbox("Calmado, emocionalmente estable", options=options.values()),
         "TIPI10" : st.selectbox("Convencional, poco creativo", options=options.values())}
     
-    return items
+    tipi_response = {key: options_reverse[value] for key, value in tp.items()}
+
+    return tipi_response
 
 def qwerys():
 
@@ -82,6 +85,8 @@ def qwerys():
     
     qwery_response = {key: options_reverse[value] for key, value in qw.items()}
 
+    print(qwery_response)
+
     return qwery_response
 
 def demographic():
@@ -128,15 +133,14 @@ def create_csv_file(data):
     
 
     ruta_csv = os.path.join(DIRECTORIO_CSV, NOMBRE_ARCHIVO)
-    df = pd.DataFrame([data])
+    
 
     if os.path.exists(ruta_csv):
         
-        df.to_csv(ruta_csv, mode='a', header=False, index=False)
+        data.to_csv(ruta_csv, mode='a', header=False, index=False)
     else:
         
-        df.to_csv(ruta_csv, mode='w', header=True, index=False)
-
+        data.to_csv(ruta_csv, mode='w', header=True, index=False)
 
 def main():
 
@@ -145,6 +149,8 @@ def main():
         page_icon=":star:",
         layout="wide",
         initial_sidebar_state="expanded")
+
+    
 
     st.title(":violet[Proyecto Final: Cuestionario Dass]")
 
@@ -156,13 +162,9 @@ def main():
             "Gracias por participar")
     
     
-    if 'current_tab' not in st.session_state:
-        st.session_state.current_tab = 0
-    
     tabs = ["Escala de Beck", "Tipi", "Datos demográficos"]
     tab1, tab2, tab3 = st.tabs(tabs)
 
-    current_tab = st.session_state.current_tab
 
     # st.sidebar.title("Configuración")
     # st.sidebar.markdown("Ajustes del Cuestionario")
@@ -177,118 +179,49 @@ def main():
     #     advanced_option = st.selectbox('Seleccione una opción avanzada:', ['Avanzada 1', 'Avanzada 2'])
     #     st.slider('Ajuste avanzado:', 0, 100, 50)
 
-    if current_tab == 0:
-        #-----------------------------------ESCALA BECK---------------------------------
-        with tab1:
 
-            st.subheader(":blue[Escala de Beck sobre ansiedad, estrés y depresión]")
-            st.markdown(
-                "Por favor, lea atentamente y marque la respuesta,"
-                "indicando cual de estas afirmaciones definiría mejor su **_última semana_**.  \n"
-                "No hay respuestas correctas o incorrectas.  \n"
-                "Trate de no gastar mucho tiempo en la respuesta a cada afirmación.  \n")
+#-----------------------------------ESCALA BECK---------------------------------
+
+    with tab1:
+        st.subheader(":blue[Escala de Beck sobre ansiedad, estrés y depresión]")
+        st.markdown(
+            "Por favor, lea atentamente y marque la respuesta,"
+            "indicando cual de estas afirmaciones definiría mejor su **_última semana_**.  \n"
+            "No hay respuestas correctas o incorrectas.  \n"
+            "Trate de no gastar mucho tiempo en la respuesta a cada afirmación.  \n")
         
-            response = qwerys()
+        b=qwerys()
+        response1 = pd.DataFrame([b])
+        st.success('Respuestas completas, pase a la pestaña TIPI para continuar el cuestionario')
 
 
-            if st.button('Enviar'):
-                create_csv_file((response))
-                st.success('Respuestas guardadas en CSV con éxito.')
+#-----------------------TIPI------------------------------------
 
-
-            if st.button('Siguiente página'):
-                st.session_state.current_tab = 1
-
-
-    elif current_tab == 1:
-    #-----------------------TIPI------------------------------------
-        with tab2:
-
-            st.subheader(':blue[TIPI, inventario de la personalidad de 10 ítems]')
-
-            st.markdown("El siguiente inventario es para hacer una clasificación de personalidad.")
-            st.markdown("Los ítems del Tipi se califican de la siguiente manera:  \n"
-                    "Estoy ('_selección_') en que soy:________")
-            
-            tipi()
-
-            if st.button('Siguiente página'):
-                st.session_state.current_tab = 2
-
-            if st.button('Página anterior'):
-                st.session_state.current_tab = 0
-
-
-    elif current_tab == 2:
+    with tab2:
+        st.subheader(':blue[TIPI, inventario de la personalidad de 10 ítems]')
+        st.markdown("El siguiente inventario es para hacer una clasificación de personalidad.")
+        st.markdown("Los ítems del Tipi se califican de la siguiente manera:  \n"
+                "Estoy ('_selección_') en que soy:________")
         
+        a=tipi()
+        response2 = pd.DataFrame([a])
+
+        st.success('Respuestas completas, pase a la pestaña Demograficos para terminar el cuestionario')
+
 #----------------------------DEMOGRAPHIC--------------------------------------
-        with tab3:
-                
-            st.subheader(':blue[Datos del entorno y desarrollo personal]')
-            st.markdown('Por favor, rellena los siguientes campos con datos lo más verídicos posible.')
 
-            demographic()
+    with tab3:
+            
+        st.subheader(':blue[Datos del entorno y desarrollo personal]')
+        st.markdown('Por favor, rellena los siguientes campos con datos lo más verídicos posible.')
 
+        response3=demographic()
 
-            if st.button('Página anterior'):
-                st.session_state.current_tab = 1
+        response =pd.concat([response1, response2],axis=1)
+
+        if st.button('Enviar'):
+            create_csv_file((response))
+            st.success('Respuestas guardadas en CSV con éxito.')
 
 if __name__ == "__main__":
     main()
-
-
-
-
-    # def formulario():
-    #     st.title("Cuestionario")
-        
-    #     # Definir las preguntas
-    #     preguntas_tab1 = [f"Pregunta {i+1}" for i in range(42)]
-    #     preguntas_tab2 = [f"Pregunta {i+1}" for i in range(10)]
-    #     preguntas_tab3 = [f"Pregunta {i+1}" for i in range(15)]
-        
-    #     respuestas = {}
-
-    #     # Crear pestañas
-    #     tab1, tab2, tab3 = st.tabs(["Pestaña 1", "Pestaña 2", "Pestaña 3"])
-        
-    #     # Recoger respuestas de la Pestaña 1
-    #     with tab1:
-    #         for pregunta in preguntas_tab1:
-    #             respuestas[pregunta] = st.text_input(pregunta)
-        
-    #     # Recoger respuestas de la Pestaña 2
-    #     with tab2:
-    #         for pregunta in preguntas_tab2:
-    #             respuestas[pregunta] = st.text_input(pregunta)
-        
-    #     # Recoger respuestas de la Pestaña 3
-    #     with tab3:
-    #         for pregunta in preguntas_tab3:
-    #             respuestas[pregunta] = st.text_input(pregunta)
-        
-    #     if st.button("Enviar"):
-    #         # Convertir las respuestas a un DataFrame
-    #         df_respuestas = pd.DataFrame([respuestas])
-            
-    #         # Si el archivo ya existe, agregar las nuevas respuestas
-    #         if os.path.isfile(ruta_csv):
-    #             df_existente = pd.read_csv(ruta_csv)
-    #             df_final = pd.concat([df_existente, df_respuestas], ignore_index=True)
-    #         else:
-    #             df_final = df_respuestas
-            
-    #         # Guardar el DataFrame en un archivo CSV
-    #         df_final.to_csv(ruta_csv, index=False)
-    #         st.success("Respuestas guardadas correctamente")
-            
-    #         # Permitir la descarga del archivo CSV
-    #         st.download_button(
-    #             label="Descargar respuestas",
-    #             data=df_final.to_csv(index=False).encode('utf-8'),
-    #             file_name='respuestas_cuestionario.csv',
-    #             mime='text/csv'
-    #         )
-
-    # if __name__ == "__main__":
-    #     formulario()
