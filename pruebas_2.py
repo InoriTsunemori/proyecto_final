@@ -138,7 +138,8 @@ def create_csv_file(data):
         df.to_csv(ruta_csv, mode='w', header=True, index=False)
 
 
-
+def nueva_funcion():
+    pas
 
 def main():
 
@@ -222,6 +223,7 @@ def main():
 
 
     elif current_tab == 2:
+        
 #----------------------------DEMOGRAPHIC--------------------------------------
         with tab3:
                 
@@ -236,6 +238,8 @@ def main():
 
     if __name__ == "__main__":
         main()
+
+
 
 
     # def formulario():
