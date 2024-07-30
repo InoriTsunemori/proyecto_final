@@ -1,6 +1,7 @@
 import streamlit as st 
 import pandas as pd
 import io
+import os
 
 def tipi():
 
@@ -136,8 +137,6 @@ def save_to_csv(data):
     return buffer.getvalue()
 
 
-
-
 def main():
 
     st.set_page_config(
@@ -173,6 +172,52 @@ def main():
     #     advanced_option = st.selectbox('Seleccione una opción avanzada:', ['Avanzada 1', 'Avanzada 2'])
     #     st.slider('Ajuste avanzado:', 0, 100, 50)
 
+    def create_csv_file(tipi_data, qwerys_data, demographic_data):
+    # Combine all data into one dictionary
+        combined_data = {**tipi_data, **qwerys_data, **demographic_data}
+
+    # Create a DataFrame
+        df = pd.DataFrame([combined_data])
+
+    # Check if the file exists
+        if os.path.isfile('datos_encuesta.csv'):
+            # If it exists, append the new data
+            df.to_csv('datos_encuesta.csv', mode='a', index=False, header=False)
+        else:
+            # If it doesn't exist, create a new file with headers
+            df.to_csv('datos_encuesta.csv', index=False)
+
+    # Configurar la aplicación de Streamlit con tabs
+    tabs = st.tabs(["Demografía", "TIPI", "WQ"])
+
+    with tabs[0]:
+        st.header("Demografía")
+        demographic_data = demographic()
+        if st.button("Enviar", key="demography_submit"):
+            st.write("Datos demográficos guardados.")
+            st.session_state.demographic_data = demographic_data
+
+    with tabs[1]:
+        st.header("TIPI")
+        tipi_data = tipi()
+        if st.button("Enviar", key="tipi_submit"):
+            st.write("Datos TIPI guardados.")
+            st.session_state.tipi_data = tipi_data
+
+    with tabs[2]:
+        st.header("WQ")
+        qwerys_data = qwerys()
+        if st.button("Enviar", key="qwerys_submit"):
+            st.write("Datos WQ guardados.")
+            st.session_state.qwerys_data = qwerys_data
+
+    # Botón para crear el archivo CSV
+    if st.button("Crear archivo CSV"):
+        if all(k in st.session_state for k in ["tipi_data", "qwerys_data", "demographic_data"]):
+            create_csv_file(st.session_state.tipi_data, st.session_state.qwerys_data, st.session_state.demographic_data)
+            st.write("Archivo CSV creado exitosamente.")
+        else:
+            st.write("Por favor, complete y envíe todos los formularios antes de crear el archivo CSV.")
 
     #-----------------------------------ESCALA BECK---------------------------------
     with tab1:
@@ -185,17 +230,15 @@ def main():
             "No hay respuestas correctas o incorrectas.  \n"
             "Trate de no gastar mucho tiempo en la respuesta a cada afirmación.  \n")
     
-        response = qwerys()
-
-        if st.button('Enviar'):
-            csv_data = save_to_csv(response)
-
         
-            st.download_button(
-                label="Descargar respuestas en CSV",
-                data=csv_data,
-                file_name="respuestas.csv",
-                mime="text/csv")
+        # if st.button('Enviar', key= 'key1'):
+        #     csv_data = save_to_csv(response)
+        
+        #     st.download_button(
+        #         label="Descargar respuestas en CSV",
+        #         data=csv_data,
+        #         file_name="respuestas.csv",
+        #         mime="text/csv")
 
     #-----------------------TIPI------------------------------------
         with tab2:
@@ -206,16 +249,35 @@ def main():
             st.markdown("Los ítems del Tipi se califican de la siguiente manera:  \n"
                     "Estoy ('_selección_') en que soy:________")
             
-            tipi()
+            response2 = tipi()
     
+                    
+            # if st.button('Enviar', key='key2'):
+            #     csv_data2 = save_to_csv(response2)
+            
+            #     st.download_button(
+            #         label="Descargar tipi en CSV",
+            #         data=csv_data2,
+            #         file_name="tipi.csv",
+            #         mime="text/csv")
+
 #----------------------------DEMOGRAPHIC--------------------------------------
         with tab3:
             
             st.subheader(':blue[Datos del entorno y desarrollo personal]')
             st.markdown('Por favor, rellena los siguientes campos con datos lo más verídicos posible.')
 
-            demographic()
-
+            response3 = demographic()
+        
+            
+            # if st.button('Enviar', key='key3'):
+            #     csv_data3 = save_to_csv(response3)
+            
+            #     st.download_button(
+            #         label="Descargar datos demográficos en CSV",
+            #         data=csv_data3,
+            #         file_name="dmg.csv",
+            #         mime="text/csv")
 
 
 if __name__ == "__main__":
