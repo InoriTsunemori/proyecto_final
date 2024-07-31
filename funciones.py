@@ -36,6 +36,8 @@ def reverse_demog(options):
     options = {v: k for k, v in options.items()}
     return options
 
+def navigate_page(new_page):
+    st.session_state.page = new_page
 
 if __name__=='__main__':
     create_csv_file()
