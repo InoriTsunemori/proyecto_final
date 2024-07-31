@@ -259,7 +259,7 @@ def main():
         layout="wide",
         initial_sidebar_state="expanded")
 
-    st.sidebar.image(r"C:\Users\BORJA\OneDrive\Escritorio\HAB2\Proyecto_final\images\logo.jpg", use_column_width=True)
+    st.sidebar.image(r"images\logo.jpg", use_column_width=True)
     st.sidebar.title('Navegador')
 
     #Progress bar
