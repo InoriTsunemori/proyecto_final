@@ -6,7 +6,7 @@ import io
 def create_csv_file(data):
 
     # Define el directorio y el nombre del archivo
-    DIRECTORIO_CSV = r'respuestas'
+    DIRECTORIO_CSV = 'respuestas'
     NOMBRE_ARCHIVO = "respuestas_cuestionario.csv"
     
     if not os.path.exists(DIRECTORIO_CSV):

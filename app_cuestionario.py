@@ -259,7 +259,11 @@ def main():
         layout="wide",
         initial_sidebar_state="expanded")
 
-    st.sidebar.image(r"images\logo.jpg", use_column_width=True)
+    image_path = "images/logo.jpg"
+    if os.path.isfile(image_path):
+        st.sidebar.image(image_path, use_column_width=True)
+    else:
+        st.sidebar.write(f"Archivo no encontrado en: {image_path}")
     st.sidebar.title('Navegador')
 
     #Progress bar
