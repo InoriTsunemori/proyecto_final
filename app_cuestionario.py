@@ -1,8 +1,9 @@
 import streamlit as st 
 import pandas as pd
-import io
 import os
 from funciones import *
+from sklearn.preprocessing import  LabelEncoder
+import pickle
 
 def tipi():
 
@@ -87,7 +88,6 @@ def qwerys():
     }
     
     qwery_response=reverse(options,qw)
-    print(qwery_response)
     return qwery_response
 
 def demographic():
@@ -149,6 +149,31 @@ def demographic():
 
     return dmg_responses
 
+def vcl():
+
+    options = {1: 'Si', 2: 'No'}
+
+    vcl={
+        'VCL1': st.radio(label='barco',options=options.values()),
+        'VCL2': st.radio(label='incoherente',options=options.values()),
+        'VCL3': st.radio(label='pálido',options=options.values()),
+        'VCL4': st.radio(label='robot',options=options.values()),
+        'VCL5': st.radio(label='audible',options=options.values()),
+        'VCL6': st.radio(label='cuivocal',options=options.values()),
+        'VCL7': st.radio(label='escadez',options=options.values()),
+        'VCL8': st.radio(label='epistemología',options=options.values()),
+        'VCL9': st.radio(label='filteo',options=options.values()),
+        'VCL10': st.radio(label='decidir',options=options.values()),
+        'VCL11': st.radio(label='pastiche',options=options.values()),
+        'VCL12': st.radio(label='verdid',options=options.values()),
+        'VCL13': st.radio(label='abismal',options=options.values()),
+        'VCL14': st.radio(label='lúcido',options=options.values()),
+        'VCL15': st.radio(label='traicionar',options=options.values()),
+        'VCL16': st.radio(label='divertido',options=options.values()),
+    }
+    vcl_response=reverse(options,vcl)
+    return vcl_response
+
 def escala_beck():
     st.header(":blue[Escala de Beck sobre Ansiedad, Estrés y epresión]")
     st.subheader(":blue[Evaluación de Ansiedad, Estrés y Depresión]")
@@ -192,13 +217,31 @@ def ten_items():
 
     st.session_state.completed_sections = 2
 
+    st.success('Una vez que termine, puede ir a la pestaña VCL para continuar el cuestionario.')
+
+    if st.button('Continuar a VCL', on_click=lambda: navigate_page('VCL')):
+        navigate_page('VCL')
+
+    if st.button('Volver a Escala de Beck', on_click=lambda: navigate_page('Escala de Beck')):
+        navigate_page('Escala de Beck')
+
+def words():
+    st.header('header')
+    st.subheader('subheader')
+    st.markdown('markdown')
+    responses = vcl()
+
+    st.session_state.response3 = pd.DataFrame([responses])
+
+    st.session_state.completed_sections = 3
+
     st.success('Una vez que termine, puede ir a la pestaña Demográficos para continuar el cuestionario.')
 
     if st.button('Continuar a datos demográficos', on_click=lambda: navigate_page('Datos del entorno demográfico')):
         navigate_page('Datos del entorno demográfico')
 
-    if st.button('Volver a Escala de Beck', on_click=lambda: navigate_page('Escala de Beck')):
-        navigate_page('Escala de Beck')
+    if st.button('Volver al cuestionario de personalidad', on_click=lambda: navigate_page('Cuestionario de personalidad')):
+        navigate_page('Cuestionario de personalidad')
 
 def demog():
     st.header(':blue[Datos del entorno y desarrollo personal]')
@@ -215,14 +258,14 @@ def demog():
     Los datos demográficos ayudan a interpretar los resultados del cuestionario en función de tu trasfondo personal. Esto permite una comprensión más rica y precisa de los resultados y puede ofrecer perspectivas adicionales sobre cómo los factores personales influyen en tus respuestas.
     """)
     responses = demographic()
-    st.session_state.response3 = pd.DataFrame([responses])
+    st.session_state.response4 = pd.DataFrame([responses])
 
-    st.session_state.completed_sections = 3
+    st.session_state.completed_sections = 4
 
     st.success('Una vez que termine, envíe el cuestionario con el botón situado en el lateral')
     
-    if st.button('Volver al cuestionario de personalidad', on_click=lambda: navigate_page('Cuestionario de personalidad')):
-        navigate_page('Cuestionario de personalidad')
+    if st.button('Volver al VCL', on_click=lambda: navigate_page('VCL')):
+        navigate_page('VCL')
 
 def principal():
     st.title(":violet[Proyecto Final: Cuestionario Dass]")
@@ -252,7 +295,62 @@ def principal():
     if st.button('Ir a cuestionario sobre datos demográficos', on_click=lambda:navigate_page('Datos del entorno demográfico')):
         navigate_page('Datos del entorno demográfico')
 
+def q_create():
+
+    if 'response1' in st.session_state and 'response2' in st.session_state and 'response3' in st.session_state and 'response4' in st.session_state:
+            Q = pd.concat([st.session_state.response1, st.session_state.response2, st.session_state.response3, st.session_state.response4], axis=1)
+    return Q
+
+def preprocess_data():
+    
+    Q=q_create()
+
+    Q.iloc[:, :42]
+    anxiety_list = [2, 4, 7, 9, 15, 19, 20, 23, 25, 28, 30, 36, 40, 41]
+    depression_list = [3, 5, 10, 13, 16, 17, 21, 24, 26, 31, 34, 37, 38, 42]
+    stress_list = [1, 6, 8, 11, 12, 14, 18, 22, 27, 29, 32, 33, 35, 39]
+    
+    encoder = LabelEncoder()
+    #Separamos los Q y nos quedamos con QA que son las respuestas al cuestionario
+
+    ansiedad = Q[[f'Q{n}' for n in anxiety_list]]
+    estres = Q[[f'Q{n}' for n in stress_list]]
+    depresion = Q[[f'Q{n}' for n in depression_list]]
+
+    ansiedad = separarQ(anxiety_list, Q)
+    estres = separarQ(stress_list, Q)
+    depresion = separarQ(depression_list, Q)
+
+    Q['Suma Ansiedad'] = ((ansiedad.sum(axis=1)))
+    Q['Suma Depresión'] = ((depresion.sum(axis=1)))
+    Q['Suma Estrés'] = ((estres.sum(axis=1)))
+           
+    df_ansiedad =  pd.concat([ansiedad, Q['Suma Ansiedad']], axis=1)
+    df_depresion =  pd.concat([depresion, Q['Suma Depresión']], axis=1)
+    df_estres =  pd.concat([estres, Q['Suma Estrés']], axis=1)   
+    
+    with open('model_stress.pkl', 'rb') as f:
+        model_estres = pickle.load(f)
+    with open('model_depresion.pkl', 'rb') as f:
+        model_ansiedad = pickle.load(f)
+    with open('model_anxiety.pkl', 'rb') as f:
+        model_depresion = pickle.load(f)
+                       
+
+    stress = model_estres.predict(df_estres)
+    anxiety = model_ansiedad.predict(df_ansiedad)
+    depression = model_depresion.predict(df_depresion)
+
+    return  [
+        st.write('**Predicciones de Estrés:**'),
+        st.write(stress),
+        st.write('**Predicciones de Ansiedad:**'),
+        st.write(anxiety),
+        st.write('**Predicciones de Depresión:**'),
+        st.write(depression)]
+
 def main():
+
     st.set_page_config(
         page_title="Proyecto DASS",
         page_icon=":star:",
@@ -272,7 +370,7 @@ def main():
         st.session_state.completed_sections = 0
 
     completed_sections = st.session_state.completed_sections
-    total_sections = 3  
+    total_sections = 4  
     progress = (completed_sections / total_sections) * 100
 
     st.sidebar.markdown(f"**Progreso del Cuestionario**\n{completed_sections} de {total_sections} secciones completadas ({progress:.1f}%)")
@@ -282,17 +380,15 @@ def main():
     
     if 'questionnaire_submitted' not in st.session_state:
         st.session_state.questionnaire_submitted = False
-
-    pagina = st.sidebar.selectbox(
+    
+    st.sidebar.selectbox(
         'Páginas',
-        ['Principal', 'Escala de Beck', 'Cuestionario de personalidad', 'Datos del entorno demográfico'],
-        index=['Principal', 'Escala de Beck', 'Cuestionario de personalidad', 'Datos del entorno demográfico'].index(st.session_state.page),
+        ['Principal', 'Escala de Beck', 'Cuestionario de personalidad', 'Datos del entorno demográfico', 'VCL'],
+        index=['Principal', 'Escala de Beck', 'Cuestionario de personalidad', 'Datos del entorno demográfico', 'VCL'].index(st.session_state.page),
         key='new_page',
         on_change=lambda: navigate_page(st.session_state.new_page))
     
     st.session_state.page = st.session_state.new_page
-    
-    #Update the page with the sidebar selection
 
     if st.session_state.page == 'Principal':
         principal()
@@ -302,11 +398,15 @@ def main():
         demog()
     elif st.session_state.page == 'Escala de Beck':
         escala_beck()
+    elif st.session_state.page == 'VCL':
+        words()
+
 
     if st.sidebar.button('Enviar cuestionario completo'):
-        if 'response1' in st.session_state and 'response2' in st.session_state and 'response3' in st.session_state:
-            combined_response = pd.concat([st.session_state.response1, st.session_state.response2, st.session_state.response3], axis=1)
+        if 'response1' in st.session_state and 'response2' in st.session_state and 'response3' in st.session_state and 'response4' in st.session_state:
+            combined_response = pd.concat([st.session_state.response1, st.session_state.response2, st.session_state.response3, st.session_state.response4], axis=1)
             create_csv_file(combined_response)
+
             st.success('Respuestas enviadas con éxito.')
             st.session_state.questionnaire_submitted = True
         else:
@@ -321,16 +421,15 @@ def main():
         
         if visualizar_resultados == 'Sí':
             st.subheader('Resultados del Cuestionario')
-            combined_response = pd.concat([st.session_state.response1, st.session_state.response2, st.session_state.response3], axis=1)
-            st.write(combined_response)
+            preprocess_data()
+
 
     st.sidebar.markdown("""
     **¿Necesitas ayuda?**  
     Si tienes alguna pregunta o necesitas asistencia, no dudes en contactarnos:
 
-    - **Email**: soporte@ejemplo.com
-    - **Teléfono**: +0000000000
+    - **Email**: soporte@proyectofinaldass.com
     """)
-
+    
 if __name__ == "__main__":
     main()
