@@ -1,10 +1,10 @@
 import streamlit as st
-import pandas as pd
 import os 
-import io
+import datetime
+from firebase_config import db
+
 
 def create_csv_file(data):
-
     # Define el directorio y el nombre del archivo
     DIRECTORIO_CSV = 'respuestas'
     NOMBRE_ARCHIVO = "respuestas_cuestionario.csv"
@@ -39,5 +39,23 @@ def reverse_demog(options):
 def navigate_page(new_page):
     st.session_state.page = new_page
 
+
+def save_response(data):
+
+    doc_ref = db.collection('responses').document()
+    data['timestamp'] = datetime.datetime.now().isoformat()
+    doc_ref.set(data)
+
+def separarQ(lista,df):
+
+    lista2 = []
+
+    for n in lista: 
+        numero = f'Q{n}'
+        lista2.append(numero)
+        nuevo_Q= df[lista2]
+
+    return nuevo_Q
+
 if __name__=='__main__':
-    create_csv_file()
+    save_response()

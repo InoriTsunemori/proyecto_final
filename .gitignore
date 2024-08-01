@@ -1,7 +1,9 @@
 venv/
 *.csv
 recordatorios/
-.streamlit/
+.conda/
 .vscode/
-
-
+clave_json_firebase/
+__pycache__
+pruebas.ipynb
+pruebas_2.py
