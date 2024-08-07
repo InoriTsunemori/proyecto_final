@@ -2,8 +2,6 @@ import streamlit as st
 import pandas as pd
 import os
 from funciones import *
-from sklearn.preprocessing import  LabelEncoder
-import pickle
 
 def tipi():
 
@@ -32,6 +30,7 @@ def tipi():
     
     tipi_response = reverse(options,tp)
     return tipi_response
+
 
 def qwerys():
 
@@ -107,13 +106,13 @@ def demographic():
         "education": st.selectbox("¿Qué nivel educacional tienes completo?",options=options1.values()),
         "urban": st.selectbox("¿En qué tipo de area te criaste de pequeño?", options=options2.values()),
         "gender": st.selectbox("¿Con qué género te identificas?", options=options3.values()),
-        "engant": st.selectbox("¿Eres hablante de inglés nativo?", options=options4.values()),
+        "engant": st.radio("¿Eres hablante de inglés nativo?", options=options4.values(), horizontal=True),
         "age": st.slider("Por favor, indique su edad:", min_value=18, max_value=100, value=25, step=1),
         "hand": st.selectbox("¿Cual es tu mano predominante?", options=options5.values()),
         "religion": st.selectbox("¿Eres creyente?", options=options6.values()),		
         "orientation": st.selectbox('¿Cual es tu orientación sexual?', options=options7.values()),
         "race": st.selectbox("¿Cual es tu origen étnico?", options=options8.values()),
-        "voted": st.selectbox("¿Has votado en las últimas elecciones?", options=options4.values()),
+        "voted": st.radio("¿Has votado en las últimas elecciones?", options=options4.values(), horizontal=True),
         "married": st.selectbox("¿Cual es tu estado civil?", options=options9.values()),
         "familysize": st.slider("Incluyéndote a ti mismo, ¿cuántos hijos tuvo tu madre?", min_value=1, max_value=15, value=1, step=1),
         "major": st.selectbox("Si has terminado una carrera universitaria, ¿Cuál fué tu rama? (por ejemplo: Psicología, Ingeniería, Historia, Medicina...)", options=options10.values())
@@ -154,24 +153,26 @@ def vcl():
     options = {1: 'Si', 2: 'No'}
 
     vcl={
-        'VCL1': st.radio(label='barco',options=options.values()),
-        'VCL2': st.radio(label='incoherente',options=options.values()),
-        'VCL3': st.radio(label='pálido',options=options.values()),
-        'VCL4': st.radio(label='robot',options=options.values()),
-        'VCL5': st.radio(label='audible',options=options.values()),
-        'VCL6': st.radio(label='cuivocal',options=options.values()),
-        'VCL7': st.radio(label='escadez',options=options.values()),
-        'VCL8': st.radio(label='epistemología',options=options.values()),
-        'VCL9': st.radio(label='filteo',options=options.values()),
-        'VCL10': st.radio(label='decidir',options=options.values()),
-        'VCL11': st.radio(label='pastiche',options=options.values()),
-        'VCL12': st.radio(label='verdid',options=options.values()),
-        'VCL13': st.radio(label='abismal',options=options.values()),
-        'VCL14': st.radio(label='lúcido',options=options.values()),
-        'VCL15': st.radio(label='traicionar',options=options.values()),
-        'VCL16': st.radio(label='divertido',options=options.values()),
+        'VCL1': st.radio(label='**BARCO**',options=options.values(), horizontal=True),
+        'VCL2': st.radio(label='**INCOHERENTE**',options=options.values(), horizontal=True),
+        'VCL3': st.radio(label='**PÁLIDO**',options=options.values(), horizontal=True),
+        'VCL4': st.radio(label='**ROBOT**',options=options.values(), horizontal=True),
+        'VCL5': st.radio(label='**AUDIBLE**',options=options.values(), horizontal=True),
+        'VCL6': st.radio(label='**CUIVOCAL**',options=options.values(), horizontal=True),
+        'VCL7': st.radio(label='**ESCASEZ**',options=options.values(), horizontal=True),
+        'VCL8': st.radio(label='**EPISTEMIOLOGÍA**',options=options.values(), horizontal=True),
+        'VCL9': st.radio(label='**FILTEO**',options=options.values(), horizontal=True),
+        'VCL10': st.radio(label='**DECIDIR**',options=options.values(), horizontal=True),
+        'VCL11': st.radio(label='**PASTICHE**',options=options.values(), horizontal=True),
+        'VCL12': st.radio(label='**VERDID**',options=options.values(), horizontal=True),
+        'VCL13': st.radio(label='**ABISMAL**',options=options.values(), horizontal=True),
+        'VCL14': st.radio(label='**LÚCIDO**',options=options.values(), horizontal=True),
+        'VCL15': st.radio(label='**TRAICIONAR**',options=options.values(), horizontal=True),
+        'VCL16': st.radio(label='**DIVERTIDO**',options=options.values(), horizontal=True),
     }
+
     vcl_response=reverse(options,vcl)
+    
     return vcl_response
 
 def escala_beck():
@@ -226,9 +227,28 @@ def ten_items():
         navigate_page('Escala de Beck')
 
 def words():
-    st.header('header')
-    st.subheader('subheader')
-    st.markdown('markdown')
+    st.header(':blue[Sección VCL - Listado de Palabras]')
+    st.subheader(':blue[Evaluación del conocimiento del léxico]')
+    st.markdown("""
+    En esta sección, se te presentará un listado de palabras para evaluar tu conocimiento de las mismas.
+
+    ### ¿Qué Es la Evaluación VCL?
+
+    La Evaluación VCL (Vocabulary Check List) es una herramienta diseñada para medir tu conocimiento de una variedad de palabras. Te pediremos que indiques si reconoces o no cada palabra del listado presentado.
+
+    ### ¿Por Qué Es Importante?
+
+    Esta evaluación nos ayuda a entender mejor tu nivel de vocabulario y tu familiaridad con diferentes términos. El conocimiento de palabras es un indicador importante de habilidades lingüísticas y puede proporcionar información valiosa para la interpretación de los resultados generales de la encuesta DASS.
+
+    ### ¿Cómo Funciona?
+
+    A continuación, verás una lista de palabras. Para cada palabra, marca si la conoces o no. No te preocupes si no conoces todas las palabras, simplemente selecciona las que reconoces.
+
+    ### Instrucciones
+
+    Por favor, revisa cada palabra en la lista y selecciona si la conoces o no. Trata de ser lo más preciso posible para obtener una evaluación exacta de tu vocabulario.
+    """)
+
     responses = vcl()
 
     st.session_state.response3 = pd.DataFrame([responses])
@@ -300,54 +320,6 @@ def q_create():
     if 'response1' in st.session_state and 'response2' in st.session_state and 'response3' in st.session_state and 'response4' in st.session_state:
             Q = pd.concat([st.session_state.response1, st.session_state.response2, st.session_state.response3, st.session_state.response4], axis=1)
     return Q
-
-def preprocess_data():
-    
-    Q=q_create()
-
-    Q.iloc[:, :42]
-    anxiety_list = [2, 4, 7, 9, 15, 19, 20, 23, 25, 28, 30, 36, 40, 41]
-    depression_list = [3, 5, 10, 13, 16, 17, 21, 24, 26, 31, 34, 37, 38, 42]
-    stress_list = [1, 6, 8, 11, 12, 14, 18, 22, 27, 29, 32, 33, 35, 39]
-    
-    encoder = LabelEncoder()
-    #Separamos los Q y nos quedamos con QA que son las respuestas al cuestionario
-
-    ansiedad = Q[[f'Q{n}' for n in anxiety_list]]
-    estres = Q[[f'Q{n}' for n in stress_list]]
-    depresion = Q[[f'Q{n}' for n in depression_list]]
-
-    ansiedad = separarQ(anxiety_list, Q)
-    estres = separarQ(stress_list, Q)
-    depresion = separarQ(depression_list, Q)
-
-    Q['Suma Ansiedad'] = ((ansiedad.sum(axis=1)))
-    Q['Suma Depresión'] = ((depresion.sum(axis=1)))
-    Q['Suma Estrés'] = ((estres.sum(axis=1)))
-           
-    df_ansiedad =  pd.concat([ansiedad, Q['Suma Ansiedad']], axis=1)
-    df_depresion =  pd.concat([depresion, Q['Suma Depresión']], axis=1)
-    df_estres =  pd.concat([estres, Q['Suma Estrés']], axis=1)   
-    
-    with open('model_stress.pkl', 'rb') as f:
-        model_estres = pickle.load(f)
-    with open('model_depresion.pkl', 'rb') as f:
-        model_ansiedad = pickle.load(f)
-    with open('model_anxiety.pkl', 'rb') as f:
-        model_depresion = pickle.load(f)
-                       
-
-    stress = model_estres.predict(df_estres)
-    anxiety = model_ansiedad.predict(df_ansiedad)
-    depression = model_depresion.predict(df_depresion)
-
-    return  [
-        st.write('**Predicciones de Estrés:**'),
-        st.write(stress),
-        st.write('**Predicciones de Ansiedad:**'),
-        st.write(anxiety),
-        st.write('**Predicciones de Depresión:**'),
-        st.write(depression)]
 
 def main():
 
@@ -421,7 +393,7 @@ def main():
         
         if visualizar_resultados == 'Sí':
             st.subheader('Resultados del Cuestionario')
-            preprocess_data()
+            algorythm(q_create())
 
 
     st.sidebar.markdown("""
