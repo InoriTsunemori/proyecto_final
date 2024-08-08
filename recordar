@@ -1,6 +1,6 @@
 .\venv\Scripts\Activate
 
-streamlit run C:\Users\BORJA\OneDrive\Escritorio\HAB2\Proyecto_final\modulos.py
+streamlit run C:\Users\BORJA\OneDrive\Escritorio\HAB2\Proyecto_final\app_cuestionario.py
 
 OneDrive/Escritorio/HAB2/Proyecto_final 
 
@@ -10,3 +10,4 @@ backgroundColor = "#d1e0e0"
 secondaryBackgroundColor = "#f0f2f6"
 textColor = "#000000"
 font = "sans serif"
+font-size = "20px"

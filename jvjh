@@ -1,0 +1,33 @@
+import numpy as np
+from tensorflow.keras.models import load_model
+from sklearn.preprocessing import MinMaxScaler
+import joblib
+import pandas as pd
+import streamlit as st
+
+def normalize_input(data, scaler):
+    return scaler.transform(data)
+
+def predictions(data):
+    # Cargar el modelo y el normalizador
+    model_stress = load_model('model_stress.keras')
+    normalizador = joblib.load('normalizador_stress.pkl')
+    
+    # Convertir la entrada a un arreglo de numpy
+    input_data = np.array(data).reshape(1, -1)  # Asegurarse de que los datos tengan la forma correcta
+    input_data_normalized = normalize_input(input_data, normalizador)
+
+    # Realizar la predicción
+    stress_prediction = model_stress.predict(input_data_normalized)
+
+    # Obtener la clase con mayor probabilidad
+    stress_class = np.argmax(stress_prediction, axis=1)
+
+    # Mostrar la predicción
+    st.write(f'La predicción de estrés es: {stress_class[0]}')
+
+# Cargar los datos del CSV
+data = pd.read_csv('/mnt/data/respuestas_cuestionario.csv')
+
+# Probar la función de predicción con una fila del CSV
+predictions(data.iloc[0].values)
