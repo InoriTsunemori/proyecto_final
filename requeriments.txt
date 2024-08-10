@@ -8,4 +8,4 @@ numpy
 pandas
 plotly
 streamlit
-
+google.cloud
