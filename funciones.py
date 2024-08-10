@@ -24,7 +24,7 @@ import json
 
 def get_db():
     key_json = st.secrets["firebase_key"]
-    db = firestore.Client.from_service_account_json(key_json)
+    db = firestore.Client.from_service_account_info(key_json)
     return db
 
 
