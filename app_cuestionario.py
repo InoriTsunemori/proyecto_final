@@ -360,12 +360,12 @@ def demog():
 
     st.session_state.completed_sections = 4
 
-    st.success('Una vez que termine, envíe el cuestionario con el botón situado en el lateral')
+    st.success('Una vez que termine, envíe el cuestionario y decida si quiere ver los resultados')
     
     if st.button('Volver al Vocabulary Check List', on_click=lambda: navigate_page('Vocabulary Check List')):
         navigate_page('Vocabulary Check List')
 
-    if st.button('Enviar cuestionario completo'):
+    if st.button('Enviar cuestionario'):
         if 'response1' in st.session_state and 'response2' in st.session_state and 'response3' in st.session_state and 'response4' in st.session_state:
             save_response(response())
             st.success('Respuestas enviadas con éxito.')
