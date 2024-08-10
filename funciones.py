@@ -4,6 +4,21 @@ import pandas as pd
 from firebase_config import db
 import plotly.graph_objects as go
 
+# def create_csv_file(data):
+#     # Define el directorio y el nombre del archivo
+#     DIRECTORIO_CSV = 'respuestas'
+#     NOMBRE_ARCHIVO = "respuestas_cuestionario.csv"
+    
+#     if not os.path.exists(DIRECTORIO_CSV):
+#         os.makedirs(DIRECTORIO_CSV)
+#     ruta_csv = os.path.join(DIRECTORIO_CSV, NOMBRE_ARCHIVO)
+    
+
+#     if os.path.exists(ruta_csv):
+        
+#         data.to_csv(ruta_csv, mode='a', header=False, index=False)
+#     else:
+#         data.to_csv(ruta_csv, mode='w', header=True, index=False)
 
 def reverse(options,dicc):
     options_reverse = {v: k for k, v in options.items()}
@@ -124,12 +139,15 @@ def personality(df):
 
     return personality_traits
 
+
 def plot_radar_chart(personality_traits):
-    st.write(personality_traits)
     categories = list(personality_traits.keys())
     values = list(personality_traits.values())
-    st.write(categories, values)
     values += values[:1]
+
+    fill_color = 'rgba(0, 123, 255, 0.5)'  # Azul con transparencia
+    line_color = 'rgba(0, 123, 255, 1)'  # Azul sin transparencia
+    bg_color = 'rgba(255, 255, 255, 0.9)'  # Fondo blanco semitransparente
 
     fig = go.Figure(
         data=[
@@ -138,22 +156,40 @@ def plot_radar_chart(personality_traits):
                 theta = categories + [categories[0]],
                 fill='toself',
                 name='Rasgos de personalidad',
-                fillcolor='rgba(127, 127, 255, 0.5)',  # Cambiar el color de relleno
-                line = dict(color='blue')  # Cambiar el color del borde
+                fillcolor=fill_color,
+                line=dict(color=line_color, width=2),
+                marker=dict(size=8, symbol='circle', color='rgba(8, 82, 105, 0.8)'),
+
             )
         ]
     )
 
     fig.update_layout(
-        title="Gráfico de Radar de Rasgos de Personalidad",
-        polar=dict(
-            radialaxis=dict(
-                visible=True,
-                range=[0, 7]
-            )
+        # title=dict(
+        #         text="Rasgos de Personalidad según el TIPI",
+        #         font=dict(size=24, color='darkblue'),  # Personalizar la fuente del título
+        #         x=0.5  # Centrar el título,
+        # ),
+    polar=dict(
+        bgcolor=bg_color,
+        radialaxis=dict(
+            visible=True,
+            range=[0, 7],
+            tickvals=[1, 2, 3, 4, 5, 6, 7],
+            ticktext=['1', '2', '3', '4', '5', '6', '7'],
+            tickfont=dict(size=10, color='rgba(0, 123, 255, 0.5)'),
+            gridcolor='rgba(0, 123, 255, 0.3)',  # Cambiar color de las líneas radiales
+            gridwidth=1.5,
         ),
-        showlegend=True
+        angularaxis=dict(
+            tickfont=dict(size=14, color='darkblue'),  # Personalizar las etiquetas de las categorías
+            gridcolor='rgba(0, 123, 255, 0.1)',  # Cambiar color de las líneas circulares
+            gridwidth=1.5,
+        ),
+    ),
+    showlegend=False,
     )
+
 
     return fig
 
@@ -164,44 +200,79 @@ def personality_study(personality_traits):
     for trait, score in personality_traits.items():
         if trait == 'Extraversión':
             if score > 5:
-                analysis += "Eres muy extrovertido. Disfrutas de la interacción social y tiendes a sentirte energizado en situaciones grupales.""\n\n"
+                analysis += "Eres ***muy extrovertido***. Disfrutas de la interacción social y tiendes a sentirte energizado en situaciones grupales.""\n\n"
             elif score > 3:
-                analysis += "Tienes una tendencia moderada hacia la extraversión. Te gustan las interacciones sociales, pero también valoras tu tiempo a solas.""\n\n"
+                analysis += "Tienes una ***tendencia moderada hacia la extraversión***. Te gustan las interacciones sociales, pero también valoras tu tiempo a solas.""\n\n"
             else:
-                analysis += "Tiendes a ser introvertido. Prefieres actividades solitarias y te sientes más cómodo en ambientes tranquilos.""\n\n"
+                analysis += "Tiendes a ser ***introvertido***. Prefieres actividades solitarias y te sientes más cómodo en ambientes tranquilos.""\n"
 
         elif trait == 'Amabilidad':
             if score > 5:
-                analysis += "Eres muy amable. Tiendes a ser compasivo, cooperativo y orientado hacia los demás.""\n\n"
+                analysis += "Eres ***muy amable***. Tiendes a ser compasivo, cooperativo y orientado hacia los demás.""\n\n"
             elif score > 3:
-                analysis += "Eres moderadamente amable. Puedes ser amigable y empático, pero también puedes ser directo y crítico cuando es necesario.""\n\n"
+                analysis += "Eres ***moderadamente amable***. Puedes ser amigable y empático, pero también puedes ser directo y crítico cuando es necesario.""\n\n"
             else:
-                analysis += "Tiendes a ser menos amable. Puedes ser más competitivo y crítico en tus interacciones.""\n\n"
+                analysis += "Tiendes a ser ***menos amable***. Puedes ser más competitivo y crítico en tus interacciones.""\n\n"
 
         elif trait == 'Responsabilidad':
             if score > 5:
-                analysis += "Eres muy responsable. Eres organizado, eficiente y tienes un fuerte sentido del deber.""\n\n"
+                analysis += "Eres ***muy responsable***. Puedes ser organizado, eficiente y tienes un fuerte sentido del deber.""\n\n"
             elif score > 3:
-                analysis += "Tienes una responsabilidad moderada. Cumples con tus tareas y eres relativamente confiable.""\n\n"
+                analysis += "Tienes una ***responsabilidad moderada***. Cumples con tus tareas y eres relativamente confiable.""\n\n"
             else:
-                analysis += "Tiendes a ser menos responsable. Puedes ser más desorganizado y tener dificultades para cumplir con tus tareas.""\n\n"
+                analysis += "Tiendes a ser ***menos responsable***. Puedes ser más desorganizado y tener dificultades para cumplir con tus tareas.""\n\n"
 
         elif trait == 'Neuroticismo':
             if score > 5:
-                analysis += "Tiendes a experimentar emociones negativas intensas como ansiedad y tristeza con frecuencia.""\n\n"
+                analysis += "Tienes una ***tendencia más alta al neuroticismo***. Tiendes a experimentar emociones negativas intensas como ansiedad y tristeza con frecuencia.""\n\n"
             elif score > 3:
-                analysis += "Tienes una tendencia moderada hacia el neuroticismo. Experimentas emociones negativas, pero generalmente puedes manejarlas bien.""\n\n"
+                analysis += "Tienes una ***tendencia moderada hacia el neuroticismo***. Experimentas emociones negativas, pero generalmente puedes manejarlas bien.""\n\n"
             else:
-                analysis += "Eres emocionalmente estable. Manejas bien el estrés y rara vez experimentas emociones negativas intensas.""\n\n"
+                analysis += "Eres ***emocionalmente estable***. Manejas bien el estrés y rara vez experimentas emociones negativas intensas.""\n\n"
         elif trait == 'Apertura_exp':
             if score > 5:
-                analysis += "Eres muy abierto a nuevas experiencias. Eres creativo, curioso y disfrutas explorando nuevas ideas.""\n\n"
+                analysis += "Eres muy ***abierto a nuevas experiencias***. Eres creativo, curioso y disfrutas explorando nuevas ideas.""\n\n"
             elif score > 3:
-                analysis += "Tienes una apertura moderada a la experiencia. Eres curioso y disfrutas de la variedad, pero también valoras lo familiar.""\n\n"
+                analysis += "Tienes una ***apertura moderada a la experiencia***. Eres curioso y disfrutas de la variedad, pero también valoras lo familiar.""\n\n"
             else:
-                analysis += "Tiendes a ser más convencional. Prefieres lo familiar y puedes ser más resistente al cambio.""\n\n"
+                analysis += "Tiendes a ser más ***convencional***. Prefieres lo familiar y puedes ser más resistente al cambio.""\n\n"
 
     return analysis
+
+
+def conditions_plot(Q):
+
+    anxiety_list=[2, 4, 7, 9, 15, 19, 20, 23, 25, 28, 30, 36, 40, 41]
+    Anxiety=separarQ(anxiety_list,Q)
+    anxiety_suma=(Anxiety.sum(axis=1).sum())
+
+    stress_list= [1, 6, 8, 11, 12, 14, 18, 22, 27, 29, 32, 33, 35, 39]
+    Stress=separarQ(stress_list,Q)
+    stress_suma=(Stress.sum(axis=1).sum())
+
+
+    depression_list=[3, 5, 10, 13, 16, 17, 21, 24, 26, 31, 34, 37, 38, 42]
+    Depression=separarQ(depression_list,Q)
+    depression_suma=(Depression.sum(axis=1).sum())
+
+    categories = ['Ansiedad', 'Depresión', 'Estrés']
+    totals = [anxiety_suma, depression_suma, stress_suma]
+
+    print(anxiety_suma)
+    print(type(anxiety_suma))
+
+    fig2 = go.Figure(go.Bar(x=categories, 
+                            y=totals, 
+                            marker_color= ['#1ecdc5', '#189b95', '#0d504d']))
+
+    fig2.update_layout(title= dict(
+                                text='Probabilidad de padecer Ansiedad, Depresión y/o Estrés',
+                                font=dict(size=24, color='#17B4E8')),
+                       xaxis_title = 'Afecciones', 
+                       yaxis_title = 'Total')
+
+    return fig2
+
 
 if __name__=='__main__':
     save_response()
