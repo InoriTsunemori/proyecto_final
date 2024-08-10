@@ -365,14 +365,14 @@ def demog():
     if st.button('Volver al Vocabulary Check List', on_click=lambda: navigate_page('Vocabulary Check List')):
         navigate_page('Vocabulary Check List')
 
-     if st..button('Enviar cuestionario completo'):
-            if 'response1' in st.session_state and 'response2' in st.session_state and 'response3' in st.session_state and 'response4' in st.session_state:
-                save_response(response())
-                st.success('Respuestas enviadas con éxito.')
-                st.session_state.questionnaire_submitted = True
+    if st..button('Enviar cuestionario completo'):
+        if 'response1' in st.session_state and 'response2' in st.session_state and 'response3' in st.session_state and 'response4' in st.session_state:
+            save_response(response())
+            st.success('Respuestas enviadas con éxito.')
+            st.session_state.questionnaire_submitted = True
     
-            else:
-                st.error('Por favor, complete las secciones anteriores antes de enviar.')
+        else:
+            st.error('Por favor, complete las secciones anteriores antes de enviar.')
 
 
 def principal():
