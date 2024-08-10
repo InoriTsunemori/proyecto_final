@@ -32,8 +32,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-
-
 def qwerys():
 
     options = {
@@ -392,7 +390,7 @@ def principal():
 
         st.write('\n')
 
-        if st.button('Ir a Escala de Beck', on_click=lambda: navigate_page('Escala de Beck')):
+        if st.button('Ir a Escala de Beck'):
             navigate_page('Escala de Beck')
         
         st.write('\n')

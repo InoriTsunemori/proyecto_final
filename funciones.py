@@ -1,8 +1,11 @@
 import streamlit as st
 import datetime
 import pandas as pd
-from firebase_config import db
+from google.cloud import firestore
+from google.cloud.firestore import Client
 import plotly.graph_objects as go
+import os 
+import json
 
 # def create_csv_file(data):
 #     # Define el directorio y el nombre del archivo
@@ -20,6 +23,26 @@ import plotly.graph_objects as go
 #     else:
 #         data.to_csv(ruta_csv, mode='w', header=True, index=False)
 
+def get_db():
+    # Leer el contenido del archivo de secretos
+    key_json = st.secrets["firebase_key"]
+
+    # Cargar el contenido JSON como un diccionario
+    key_dict = json.loads(key_json)
+
+    # Crear un archivo temporal con el contenido JSON
+    with open("temp_key.json", "w") as temp_file:
+        json.dump(key_dict, temp_file)
+
+    # Inicializar el cliente Firestore usando el archivo temporal
+    db = firestore.Client.from_service_account_json("temp_key.json")
+
+    # Eliminar el archivo temporal después de usarlo
+    os.remove("temp_key.json")
+
+    return db
+
+
 def reverse(options,dicc):
     options_reverse = {v: k for k, v in options.items()}
     response = {key: options_reverse[value] for key, value in dicc.items()}
@@ -34,6 +57,7 @@ def navigate_page(new_page):
     st.session_state.page = new_page
 
 def save_response(data):
+    db = get_db()
     doc_ref = db.collection('responses').document()
     data['timestamp'] = datetime.datetime.now().isoformat()
     doc_ref.set(data)
