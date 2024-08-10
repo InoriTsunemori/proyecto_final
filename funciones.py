@@ -4,7 +4,6 @@ import pandas as pd
 from google.cloud import firestore
 from google.cloud.firestore import Client
 import plotly.graph_objects as go
-import os 
 import json
 
 # def create_csv_file(data):
@@ -24,22 +23,8 @@ import json
 #         data.to_csv(ruta_csv, mode='w', header=True, index=False)
 
 def get_db():
-    # Leer el contenido del archivo de secretos
     key_json = st.secrets["firebase_key"]
-
-    # Cargar el contenido JSON como un diccionario
-    key_dict = json.loads(key_json)
-
-    # Crear un archivo temporal con el contenido JSON
-    with open("temp_key.json", "w") as temp_file:
-        json.dump(key_dict, temp_file)
-
-    # Inicializar el cliente Firestore usando el archivo temporal
-    db = firestore.Client.from_service_account_json("temp_key.json")
-
-    # Eliminar el archivo temporal después de usarlo
-    os.remove("temp_key.json")
-
+    db = firestore.Client.from_service_account_json("key_json")
     return db
 
 
