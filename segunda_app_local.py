@@ -53,16 +53,5 @@ def main():
     plot_inconsistencies_by_related_pairs(inconsistencies)
     
     
-    
-    # columns_questions = [f'Q{i}A' for i in range(1, 43)]
-    # correlation_matrix = func_plot_correlation_matrix(df, columns_questions)
-
-    # related_pairs = func_find_related_pairs(correlation_matrix, columns_questions)
-    # df, inconsistencies = func_detect_inconsistencies(df, related_pairs)
-    # st.dataframe(df)
-    # plot_inconsistencies_by_related_pairs(inconsistencies)
-    
-    
-    
 if __name__ == "__main__":
     main()
