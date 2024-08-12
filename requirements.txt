@@ -2,4 +2,5 @@ streamlit
 google-cloud-firestore
 plotly
 pandas
-
+seaborn
+matplotlib
