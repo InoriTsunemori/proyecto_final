@@ -31,82 +31,42 @@ def mostrar_datos():
                    'education','urban','gender','engant','age','hand','religion','orientation','race','voted','married','familysize','major']
     
     df = df.reindex(columns=column_order)
-    
     st.dataframe(df)
 
-
-
-
-
-
-
-
-# def get_db():
-#     key_json = st.secrets["firebase_key"]
-#     db = firestore.Client.from_service_account_info(key_json)
-#     return db
-
-# def importar_datos_firebase():
-#     db=get_db()
-
-#     collection_ref = db.collection("responses")
-#     docs = collection_ref.stream()
-    
-#     datos = []
-    
-#     for doc in docs:
-#         st.write(f"Documento principal encontrado: {doc.id}")
-
-#         subcollection_ref = collection_ref.document(doc.id).collections()
-        
-#         for subcollection in subcollection_ref:
-#             sub_docs = subcollection.stream()
-#             for sub_doc in sub_docs:
-#                 st.write(f"Documento en subcolección encontrado: {sub_doc.id}")
-#                 datos.append(sub_doc.to_dict())
-    
-#     st.write(f"Total de documentos encontrados en subcolecciones: {len(datos)}")
-
-#     return datos
-
-
-# def func_identify_false_words(df, false_words):
+def func_identify_false_words(df, false_words):
            
-#     df['False_Words_Count'] = df[false_words].apply(lambda col : (col == 1).sum(), axis=1)
-#     df['False_Word'] = df['False_Words_Count'].apply(lambda x: 1 if x > 0 else 0)
+    df['False_Words_Count'] = df[false_words].apply(lambda col : (col == 1).sum(), axis=1)
+    df['False_Word'] = df['False_Words_Count'].apply(lambda x: 1 if x > 0 else 0)
     
-#     return df
+    return df
 
-# def plot_dmg_1 (df):
-#     fig1 = px.scatter(df, x='gender', y='orientation', title='Relación género con orientación.')
-#     return fig1
+def plot_dmg_1 (df):
+    fig1 = px.scatter(df, x='gender', y='orientation', title='Relación género con orientación.')
+    return fig1
 
-# def plot_dmg_2 (df):
-#     fig2 = px.histogram(df, x='age', title='Distribución por edad.')
-#     return fig2    
+def plot_dmg_2 (df):
+    fig2 = px.histogram(df, x='age', title='Distribución por edad.')
+    return fig2    
 
-# def plot_dmg_3 (df):
-#     fig3 = px.scatter(df, x='orientation', y= 'major', title= 'Relación entre religión y estudios')
-#     return fig3
+def plot_dmg_3 (df):
+    fig3 = px.scatter(df, x='orientation', y= 'major', title= 'Relación entre religión y estudios')
+    return fig3
 
-# # Gráfico palabras falsas
-# def barplot_vcl(df):
-#     false_words = ['VCL6', 'VCL9', 'VCL12']
-#     df = func_identify_false_words(df, false_words)
+# False words chart
+def barplot_vcl(df):
+    false_words = ['VCL6', 'VCL9', 'VCL12']
+    df = func_identify_false_words(df, false_words)
     
-#     # Contar cuántas veces las palabras falsas han sido marcadas como 1
-#     false_word_counts = df[false_words].apply(lambda col: (col == 1).sum())
-    
-#     # Crear el gráfico de barras
-#     fig = px.bar(
-#         x = false_word_counts.index,
-#         y = false_word_counts.values,
-#         labels = {'x': 'Palabras Falsas', 'y': 'Cantidad de Veces Marcadas'},
-#         title = 'Frecuencia de Palabras Falsas Marcadas', 
-#     )
-#     return fig
+    false_word_counts = df[false_words].apply(lambda col: (col == 1).sum())
+    fig = px.bar(
+        x = false_word_counts.index,
+        y = false_word_counts.values,
+        labels = {'x': 'Palabras Falsas', 'y': 'Cantidad de Veces Marcadas'},
+        title = 'Frecuencia de Palabras Falsas Marcadas', 
+    )
+    return fig
 
-# #######################################################################################################
+#######################################################################################################
 
 # # Función para encontrar inconsistencias entre edad y educación
 # def func_find_age_education_inconsistencies(df):
