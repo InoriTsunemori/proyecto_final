@@ -14,7 +14,6 @@ def main():
     """)
     st.title("Datos desde Firebase")
     mostrar_datos()
-    st.write(df.describe())
   
     #Resumen de los datos demográficos principales de la gente que ha respondido
     
