@@ -12,18 +12,8 @@ def main():
     A continuación presentamos las conclusiones del estudio que hemos hecho con respuestas de conocidos:
     
     """)
-
-    mostrar_datos()
-
     st.title("Datos desde Firebase")
-    
-    datos=importar_datos_firebase()
-
-    df = pd.DataFrame(datos)
-
-    st.write('Respuestas de los ususarios: ')
-    st.dataframe(df)
-
+    mostrar_datos()
     st.write(df.describe())
   
     #Resumen de los datos demográficos principales de la gente que ha respondido
@@ -54,7 +44,7 @@ def main():
     # Mostrar el gráfico de inconsistencias por edad
     plot_inconsistencies_by_age(inconsistency_counts)
     
-    columns_questions = [f'Q{i}' for i in range(1, 43)]
+    columns_questions = [f'Q{i}A' for i in range(1, 43)]
     correlation_matrix = func_plot_correlation_matrix(df, columns_questions)
 
     related_pairs = func_find_related_pairs(correlation_matrix, columns_questions)
