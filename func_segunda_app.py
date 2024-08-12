@@ -30,7 +30,13 @@ def mostrar_datos():
     else: 
         st.write('No se han encontrado los datos.')
 
-
+     column_order= ['Q1A','Q2A','Q3A','Q4A','Q5A','Q6A','Q7A','Q8A','Q9A','Q10A','Q11A','Q12A','Q13A','Q14A','Q15A','Q16A','Q17A','Q18A','Q19A','Q20A','Q21A','Q22A',
+                   'Q23A','Q24A','Q25A','Q26A','Q27A','Q28A','Q29A','Q30A','Q31A','Q32A','Q33A','Q34A','Q35A','Q36A','Q37A','Q38A','Q39A','Q40A','Q41A','Q42A',
+                   'TIPI1','TIPI2','TIPI3','TIPI4','TIPI5','TIPI6','TIPI7','TIPI8','TIPI9','TIPI10',
+                   'VCL1','VCL2','VCL3','VCL4','VCL5','VCL6','VCL7','VCL8','VCL9','VCL10','VCL11','VCL12','VCL13','VCL14','VCL15','VCL16',
+                   'education','urban','gender','engant','age','hand','religion','orientation','race','voted','married','familysize','major']
+    
+    df = df.reindex(columns=column_order)
 
 
 
