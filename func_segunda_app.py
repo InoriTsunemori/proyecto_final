@@ -1,7 +1,10 @@
 import streamlit as st
 from google.cloud import firestore
-from google.cloud.firestore import Client
 import pandas as pd
+import plotly.express as px
+import seaborn as sns
+import matplotlib.pyplot as plt
+
 
 def get_db():
     key_json = st.secrets["firebase_key"]
