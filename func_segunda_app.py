@@ -66,96 +66,96 @@ def barplot_vcl(df):
     )
     return fig
 
+######################################################################################################
+
+# Función para encontrar inconsistencias entre edad y educación
+def func_find_age_education_inconsistencies(df):
+    df = df.copy()
+    inconsistencies = df[(df['age'] < 21) & (df['education'] > 2)]
+    df['Inconsistency_Age_Education'] = 0
+    df.loc[inconsistencies.index, 'Inconsistency_Age_Education'] = 1
+    inconsistency_counts = df[df['Inconsistency_Age_Education'] == 1]['age'].value_counts().sort_index()
+    return df, inconsistencies, inconsistency_counts
+
+# Gráfico inconsistencias edad y educación
+def plot_inconsistencies_by_age(inconsistency_counts):
+    inconsistency_df = pd.DataFrame({
+        'Edad': inconsistency_counts.index,
+        'Cantidad de Inconsistencias': inconsistency_counts.values
+    })
+    fig = px.bar(
+        inconsistency_df,
+        x = 'Edad',
+        y = 'Cantidad de Inconsistencias',
+        title = 'Frecuencia de Inconsistencias entre edad y educación', 
+        labels = {'x': 'Edad', 'y': 'Cantidad de Inconsistencias'}
+    )
+    st.plotly_chart(fig)
+    
 #######################################################################################################
 
-# # Función para encontrar inconsistencias entre edad y educación
-# def func_find_age_education_inconsistencies(df):
-#     df = df.copy()
-#     inconsistencies = df[(df['age'] < 21) & (df['education'] > 2)]
-#     df['Inconsistency_Age_Education'] = 0
-#     df.loc[inconsistencies.index, 'Inconsistency_Age_Education'] = 1
-#     inconsistency_counts = df[df['Inconsistency_Age_Education'] == 1]['age'].value_counts().sort_index()
-#     return df, inconsistencies, inconsistency_counts
+# Function to display correlation matrix
+def func_plot_correlation_matrix(df, columns, figsize = (32, 28), cmap = 'coolwarm', annot = True, fmt = '.2f', linewidths = 0.5, center = 0):
 
-# # Gráfico inconsistencias edad y educación
-# def plot_inconsistencies_by_age(inconsistency_counts):
-#     inconsistency_df = pd.DataFrame({
-#         'Edad': inconsistency_counts.index,
-#         'Cantidad de Inconsistencias': inconsistency_counts.values
-#     })
-#     fig = px.bar(
-#         inconsistency_df,
-#         x = 'Edad',
-#         y = 'Cantidad de Inconsistencias',
-#         title = 'Frecuencia de Inconsistencias entre edad y educación', 
-#         labels = {'x': 'Edad', 'y': 'Cantidad de Inconsistencias'}
-#     )
-#     st.plotly_chart(fig)
+    plt.figure(figsize=figsize)
+    correlation_matrix = df[columns].corr()
+    sns.heatmap(correlation_matrix, cmap=cmap, annot=annot, fmt=fmt, linewidths=linewidths, center=center, annot_kws={'size':9})
+    plt.title('Matriz de correlación', fontsize=20)
+    plt.xticks(fontsize=10, rotation=90)
+    plt.yticks(fontsize=10, rotation=0)
+    st.pyplot(plt.gcf())
     
-# #######################################################################################################
-
-# # Function to display correlation matrix
-# def func_plot_correlation_matrix(df, columns, figsize = (32, 28), cmap = 'coolwarm', annot = True, fmt = '.2f', linewidths = 0.5, center = 0):
-
-#     plt.figure(figsize=figsize)
-#     correlation_matrix = df[columns].corr()
-#     sns.heatmap(correlation_matrix, cmap=cmap, annot=annot, fmt=fmt, linewidths=linewidths, center=center, annot_kws={'size':9})
-#     plt.title('Matriz de correlación', fontsize=20)
-#     plt.xticks(fontsize=10, rotation=90)
-#     plt.yticks(fontsize=10, rotation=0)
-#     st.pyplot(plt.gcf())
-    
-#     return correlation_matrix
+    return correlation_matrix
 
  
-# # Function to find related pairs
-# def func_find_related_pairs(correlation_matrix, columns, threshold = 0.6):
-#     pairs = []
-#     for i in range(len(columns)):
-#         for j in range(i + 1, len(columns)):
-#             if abs(correlation_matrix.iloc[i, j]) >= threshold:
-#                 pairs.append((columns[i], columns[j]))
-#     return pairs
+# Function to find related pairs
+def func_find_related_pairs(correlation_matrix, columns, threshold = 0.6):
+    pairs = []
+    for i in range(len(columns)):
+        for j in range(i + 1, len(columns)):
+            if abs(correlation_matrix.iloc[i, j]) >= threshold:
+                pairs.append((columns[i], columns[j]))
+    return pairs
 
-# # Function to detect inconsistencies
-# def func_detect_inconsistencies(df, related_pairs):
-#     incoherencies_ids = []
-#     inconsistencies = []
-#     for (q1, q2) in related_pairs:
-#         contradictions = df[((df[q1] == 0) & (df[q2] == 3)) | ((df[q1] == 3) & (df[q2] == 0))]
-#         if not contradictions.empty:
-#             incoherencies_ids.extend(contradictions.index)
-#             inconsistencies.append({'question1': q1, 'question2': q2, 'contradictions': contradictions})
-#     df['Inconsistency_Questions'] = 0
-#     df.loc[incoherencies_ids, 'Inconsistency_Questions'] = 1
-#     df['Inconsistency_Questions_Count'] = pd.Series(incoherencies_ids).value_counts().reindex(df.index, fill_value = 0)
-#     return df, inconsistencies
+# Function to detect inconsistencies
+def func_detect_inconsistencies(df, related_pairs):
+    incoherencies_ids = []
+    inconsistencies = []
+    for (q1, q2) in related_pairs:
+        contradictions = df[((df[q1] == 0) & (df[q2] == 3)) | ((df[q1] == 3) & (df[q2] == 0))]
+        if not contradictions.empty:
+            incoherencies_ids.extend(contradictions.index)
+            inconsistencies.append({'question1': q1, 'question2': q2, 'contradictions': contradictions})
+    df['Inconsistency_Questions'] = 0
+    df.loc[incoherencies_ids, 'Inconsistency_Questions'] = 1
+    df['Inconsistency_Questions_Count'] = pd.Series(incoherencies_ids).value_counts().reindex(df.index, fill_value = 0)
+    return df, inconsistencies
 
-# def plot_inconsistencies_by_related_pairs(inconsistencies):
-#     data = []
-#     for inconsistency in inconsistencies:
-#         q1 = inconsistency['question1']
-#         q2 = inconsistency['question2']
-#         count = len(inconsistency['contradictions'])
-#         data.append({'Pares': f'{q1} & {q2}', 'Cantidad de Inconsistencias': count})
+def plot_inconsistencies_by_related_pairs(inconsistencies):
+    data = []
+    for inconsistency in inconsistencies:
+        q1 = inconsistency['question1']
+        q2 = inconsistency['question2']
+        count = len(inconsistency['contradictions'])
+        data.append({'Pares': f'{q1} & {q2}', 'Cantidad de Inconsistencias': count})
     
-#     inconsistency_df = pd.DataFrame(data)
+    inconsistency_df = pd.DataFrame(data)
 
-#     if not inconsistency_df.empty:
-#         fig = px.bar(
-#             inconsistency_df,
-#             x = 'Pares',
-#             y = 'Cantidad de Inconsistencias',
-#             title = 'Cantidad de Inconsistencias por Pares Relacionados',
-#             labels = {'Pares': 'Pares de Preguntas', 'Cantidad de Inconsistencias': 'Cantidad de Inconsistencias'},
-#             text = 'Cantidad de Inconsistencias'
-#         )
-#         fig.update_layout(
-#             xaxis_title = 'Pares de Preguntas',
-#             yaxis_title = 'Cantidad de Inconsistencias',
-#             xaxis_tickangle = -45
-#         )
-#         fig.update_traces(texttemplate = '%{text}', textposition = 'outside')
-#         st.plotly_chart(fig)
-#     else:
-#         st.write("No inconsistencies to display.")
+    if not inconsistency_df.empty:
+        fig = px.bar(
+            inconsistency_df,
+            x = 'Pares',
+            y = 'Cantidad de Inconsistencias',
+            title = 'Cantidad de Inconsistencias por Pares Relacionados',
+            labels = {'Pares': 'Pares de Preguntas', 'Cantidad de Inconsistencias': 'Cantidad de Inconsistencias'},
+            text = 'Cantidad de Inconsistencias'
+        )
+        fig.update_layout(
+            xaxis_title = 'Pares de Preguntas',
+            yaxis_title = 'Cantidad de Inconsistencias',
+            xaxis_tickangle = -45
+        )
+        fig.update_traces(texttemplate = '%{text}', textposition = 'outside')
+        st.plotly_chart(fig)
+    else:
+        st.write("No inconsistencies to display.")
