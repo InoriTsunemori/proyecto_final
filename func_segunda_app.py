@@ -32,6 +32,7 @@ def mostrar_datos():
     
     df = df.reindex(columns=column_order)
     st.dataframe(df)
+    return df
 
 def func_identify_false_words(df, false_words):
            
