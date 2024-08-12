@@ -17,7 +17,9 @@ def main():
 
     st.title("Datos desde Firebase")
     
-    df = pd.read_csv(r'C:\Users\Jesús\Documents\BOOTCAMP\BOOTCAMP\proyecto_final-main\respuestas\respuestas_cuestionario.csv', header=0)#, sep=',', encoding='utf-8')
+    datos=importar_datos_firebase()
+
+    df = pd.DataFrame(datos)
 
     st.write('Respuestas de los ususarios: ')
     st.dataframe(df)

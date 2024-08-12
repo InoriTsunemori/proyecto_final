@@ -1,44 +1,41 @@
 import streamlit as st
-import firebase_admin
-from firebase_admin import credentials, firestore
+from google.cloud import firestore
+from google.cloud.firestore import Client
 import pandas as pd
 import plotly.express as px
 import matplotlib.pyplot as plt
 import seaborn as sns
 
 
-# cred = credentials.Certificate(r"C:\Users\Jesús\Documents\BOOTCAMP\BOOTCAMP\proyecto_final-main\firestore-json-key.json")
-# firebase_admin.initialize_app(cred)
-# db = firestore.client()
+def get_db():
+    key_json = st.secrets["firebase_key"]
+    db = firestore.Client.from_service_account_info(key_json)
+    return db
 
-# def importar_datos_firebase():
-    
-#     collection_ref = db.collection("responses")
-#     docs = collection_ref.stream()
-    
+def importar_datos_firebase():
+    db=get_db()
 
-#     datos = []
+    collection_ref = db.collection("responses")
+    docs = collection_ref.stream()
     
-#     for doc in docs:
-#         st.write(f"Documento principal encontrado: {doc.id}")
+    datos = []
+    
+    for doc in docs:
+        st.write(f"Documento principal encontrado: {doc.id}")
+
+        subcollection_ref = collection_ref.document(doc.id).collections()
         
-#         # Asumimos que la subcolección tiene el mismo ID que el documento principal
-#         subcollection_ref = collection_ref.document(doc.id).collections()
-        
-#         for subcollection in subcollection_ref:
-#             sub_docs = subcollection.stream()
-#             for sub_doc in sub_docs:
-#                 st.write(f"Documento en subcolección encontrado: {sub_doc.id}")
-#                 datos.append(sub_doc.to_dict())
+        for subcollection in subcollection_ref:
+            sub_docs = subcollection.stream()
+            for sub_doc in sub_docs:
+                st.write(f"Documento en subcolección encontrado: {sub_doc.id}")
+                datos.append(sub_doc.to_dict())
     
-#     st.write(f"Total de documentos encontrados en subcolecciones: {len(datos)}")
-#     return datos
+    st.write(f"Total de documentos encontrados en subcolecciones: {len(datos)}")
 
-filepath = r'C:\Users\Jesús\Documents\BOOTCAMP\BOOTCAMP\proyecto_final-main\respuestas\respuestas_cuestionario.csv'
-def load_data(filepath):
-    return pd.read_csv(filepath)
+    return datos
 
-# Function to identify false words
+
 def func_identify_false_words(df, false_words):
            
     df['False_Words_Count'] = df[false_words].apply(lambda col : (col == 1).sum(), axis=1)
