@@ -13,7 +13,7 @@ def main():
     
     """)
     st.title("Datos desde Firebase")
-    mostrar_datos()
+    df=mostrar_datos()
   
     #Resumen de los datos demográficos principales de la gente que ha respondido
     
