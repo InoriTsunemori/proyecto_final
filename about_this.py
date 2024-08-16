@@ -25,8 +25,9 @@ def show_abt():
         else:
             st.write(f"Archivo no encontrado")
             
-        st.write('Soy Nadine Poyato, una entusiasta de la salud (en concreto la salud infantil y la salud mental) que, tras desencantarse del trabajo en el campo de sanidad, se decidió por cambiar de sector.'
-                 'Actualmente sigo ampliando mis conocimientos a la vez que realizo proyectos que aumentan cada día mi entusiasmo por el mundo del data science, y espero que siga en aumento.')
+        st.write('Soy Nadine Poyato. Tengo experiencia anterior tanto en sanidad, como en gestion y dirección de comercio. Ésta última, y actual experiencia laboral ha sido la que me ha impulsado a decantarme por mi desarrollo en data science.'
+                'En este momento estoy ampliando mis conocimientos en éste sector, haciendo proyectos a la vez que mejoro día a día mi valor como profesional.'
+                'Hemos querido crear este proyecto para aunar nuestro conocimiento en data science y salud mental, ya que nos parece una temática delicada, poco hablada y necesaria de visivilizar en la sociedad.')
         
         if st.link_button(':blue[Linkedin de Nadine]', "https://www.linkedin.com/in/paulacalviño"):
             st.balloons()
