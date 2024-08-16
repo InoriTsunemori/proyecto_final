@@ -226,7 +226,7 @@ def ten_items():
     st.session_state.response2 = response2
 
     image_path = "images/Inside_out.png"
-    if imagen_path:
+    if image_path:
         st.image(image_path, use_column_width=True)
     else:
         st.write(f"Archivo no encontrado")
