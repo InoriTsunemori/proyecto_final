@@ -187,9 +187,11 @@ def escala_beck():
 
     with col2:
         st.text('\n')
+        
         image_path = "images/cabeza_universo.png"
+        
         if imagen_path:
-            st.image(image_path, use_column_width=True)
+            st.image(imagen_path, use_column_width=True)
         else:
             st.write(f"Archivo no encontrado")
 
