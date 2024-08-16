@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import os
 import plotly.graph_objects as go
 import numpy as np
 from google.cloud import firestore
@@ -40,12 +39,6 @@ def mostrar_datos():
     
     df = df.reindex(columns=column_order)
     return df
-
-
-# def read_data():
-
-#     df=pd.read_csv(r'C:\Users\Jesús\Documents\BOOTCAMP\BOOTCAMP\proyecto_final-main\respuestas_firebase.csv')
-#     return(df)
 
 def separarQ(lista,df):
     lista2 = []
@@ -133,29 +126,11 @@ def example_graphs(df_completo, x, y, colors, chart_type):
 
     st.plotly_chart(fig)
 
-def create_csv_file(data):
-    # Define el directorio y el nombre del archivo
-    DIRECTORIO_CSV = 'respuestas'
-    NOMBRE_ARCHIVO = "respuestas_cuestionario.csv"
-    
-    if not os.path.exists(DIRECTORIO_CSV):
-        os.makedirs(DIRECTORIO_CSV)
-    ruta_csv = os.path.join(DIRECTORIO_CSV, NOMBRE_ARCHIVO)
-    
-
-    if os.path.exists(ruta_csv):
-        
-        data.to_csv(ruta_csv, mode='a', header=False, index=False)
-    else:
-        data.to_csv(ruta_csv, mode='w', header=True, index=False)
 
 def create_df(data):
     df=pd.DataFrame(data)
     return df
 
-# def get_db():
-#     db = firestore.Client.from_service_account_json('key.json')
-#     return db
 
 def reverse(options,dicc):
     options_reverse = {v: k for k, v in options.items()}
