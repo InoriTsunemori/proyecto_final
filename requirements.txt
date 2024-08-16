@@ -1,5 +1,6 @@
 pandas
 streamlit
+streamlit-option-menu
 numpy
 google-cloud-firestore
 plotly
