@@ -29,7 +29,7 @@ def show_abt():
                 'En este momento estoy ampliando mis conocimientos en éste sector, haciendo proyectos a la vez que mejoro día a día mi valor como profesional.'
                 'Hemos querido crear este proyecto para aunar nuestro conocimiento en data science y salud mental, ya que nos parece una temática delicada, poco hablada y necesaria de visivilizar en la sociedad.')
         
-        if st.link_button(':blue[Linkedin de Nadine]', "https://www.linkedin.com/in/paulacalviño"):
+        if st.link_button(':blue[Linkedin de Nadine]', "https://www.linkedin.com/in/nadinepmanzano/"):
             st.balloons()
 
     with c2:
