@@ -18,7 +18,7 @@ def get_db_local():
 
 def importar_datos_firebase():
 
-    db=get_db_local()
+    db=get_db()
     documents = db.collection('responses').stream()
     data = []
 
