@@ -188,10 +188,10 @@ def escala_beck():
     with col2:
         st.text('\n')
         image_path = "images/cabeza_universo.png"
-        if imagen_path.is_file():
+        if imagen_path:
             st.image(image_path, use_column_width=True)
         else:
-            st.write(f"Archivo no encontrado en: {image_path}")
+            st.write(f"Archivo no encontrado")
 
     st.markdown("""
     ### :blue[¿Por Qué Es Importante?]
@@ -224,10 +224,10 @@ def ten_items():
     st.session_state.response2 = response2
 
     image_path = "images/Inside_out.png"
-    if imagen_path.is_file():
+    if imagen_path:
         st.image(image_path, use_column_width=True)
     else:
-        st.write(f"Archivo no encontrado en: {image_path}")
+        st.write(f"Archivo no encontrado")
 
     st.success('Una vez que termine, puede ir a la pestaña Vocabulary Check List para continuar el cuestionario.')
 
@@ -260,10 +260,10 @@ def words():
 
     with col2: 
         image_path = "images/composiocion_2.jpg"
-        if image_path.is_file():
+        if image_path:
             st.image(image_path, use_column_width=True)
         else:
-            st.write(f"Archivo no encontrado en: {image_path}")
+            st.write(f"Archivo no encontrado")
 
 
 
@@ -288,10 +288,10 @@ def demog():
 
     with col2:
         image_path = "images/demografico.png"
-        if image_path.is_file():
+        if image_path:
             st.image(image_path, use_column_width=True)
         else:
-            st.write(f"Archivo no encontrado en: {image_path}")
+            st.write(f"Archivo no encontrado")
 
     response4 = demographic()
     st.session_state.response4 = response4
@@ -405,8 +405,8 @@ def show_survey():
 
             image_path_ = "images/gracias.png"
 
-            if image_path.is_file():
+            if image_path:
                 st.image(image_path_, use_column_width=True)
             else:
-                st.write(f"Archivo no encontrado en: {image_path_}")
+                st.write(f"Archivo no encontrado")
                 
