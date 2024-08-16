@@ -1,12 +1,4 @@
 venv/
 *.csv
-recordatorios/
-.conda/
-.vscode/
-clave_json_firebase/
-__pycache__
-*.ipynb
-*.keras
-*.pkl
+_pycache_
 key.json
-secret.toml

@@ -1,36 +1,5 @@
 import streamlit as st 
-import pandas as pd
-import os
-from funciones import *
-
-st.set_page_config(
-    page_title="Proyecto DASS",
-    page_icon=":star:",
-    layout="wide",
-    initial_sidebar_state="expanded")
-
-st.markdown("""
-    <style>
-    .stButton > button {
-        background-color: #AED6F1; /* Aguamarina-Turquesa claro */
-        color: black; /* Letras negras */
-        border: none; /* Quitar borde */
-        padding: 15px 32px; /* Tamaño del botón */
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        transition-duration: 0.4s;
-        cursor: pointer;
-        border-radius: 8px; /* Bordes redondeados */
-    }
-    .stButton > button:hover {
-        background-color: #66CDAA; /* Color de fondo al pasar el cursor */
-        color: black; /* Letras blancas al pasar el cursor */
-    }
-    </style>
-""", unsafe_allow_html=True)
+from func import *
 
 def qwerys():
 
@@ -208,40 +177,36 @@ def escala_beck():
     col1, col2 = st.columns([0.75,0.25])
 
     with col1:
-        st.title(":blue[Escala de Beck sobre Ansiedad, Estrés y Depresión]")
+        st.title("Escala de Beck sobre Ansiedad, Estrés y Depresión")
         st.subheader(":blue[Evaluación de Ansiedad, Estrés y Depresión]")
+        st.markdown("En esta sección, responderás a una serie de preguntas basadas en la Escala de Beck, diseñada para medir la intensidad de tus sentimientos de ansiedad, estrés y depresión en la última semana.")
         st.markdown("""
-        En esta sección, responderás a una serie de preguntas basadas en la Escala de Beck, diseñada para medir la intensidad de tus sentimientos de ansiedad, estrés y depresión en la última semana.""")
+    ### :blue[¿Qué Es la Escala de Beck?]
+
+    La Escala de Beck es una herramienta ampliamente utilizada en la psicología para evaluar el nivel de malestar emocional. Cada pregunta se refiere a una experiencia o sentimiento que podrías haber tenido recientemente. Responde a cada afirmación de manera honesta para obtener una evaluación precisa.""")
 
     with col2:
-        image_path = "images/logo_cerebro.png"
+        st.text('\n')
+        image_path = "images/cabeza_universo.png"
         if os.path.isfile(image_path):
             st.image(image_path, use_column_width=True)
         else:
             st.write(f"Archivo no encontrado en: {image_path}")
 
     st.markdown("""
-    ### ¿Qué Es la Escala de Beck?
-
-    La Escala de Beck es una herramienta ampliamente utilizada en la psicología para evaluar el nivel de malestar emocional. Cada pregunta se refiere a una experiencia o sentimiento que podrías haber tenido recientemente. Responde a cada afirmación de manera honesta para obtener una evaluación precisa.
-
-    ### ¿Por Qué Es Importante?
+    ### :blue[¿Por Qué Es Importante?]
 
     Comprender tus niveles de ansiedad, estrés y depresión puede ayudarte a identificar áreas donde podrías necesitar apoyo o intervención. No hay respuestas correctas o incorrectas; lo importante es tu percepción y experiencia personal.
     """)
 
-
+    st.write('**Comencemos con la encuesta, responde por favor con la mayor veracidad posible.**')
     response1 = qwerys()
     st.session_state.response1 = response1
     st.success('Una vez que termine, pase a la pestaña siguiente para continuar el cuestionario')
 
-    st.session_state.completed_sections = 1
-
-    if st.button('Pasar al cuestionario de personalidad', on_click=lambda: navigate_page('Cuestionario de personalidad')):
-        navigate_page('Cuestionario de personalidad')
 
 def ten_items():
-    st.header(':blue[TIPI, inventario de la personalidad de 10 ítems]')
+    st.header('TIPI, inventario de la personalidad de 10 ítems')
     st.subheader(":blue[Evaluación de Personalidad TIPI]")
     st.markdown("""
     En esta sección, completarás el Inventario de Personalidad de 10 ítems (TIPI), que te ayudará a identificar tus principales rasgos de personalidad.
@@ -258,8 +223,6 @@ def ten_items():
 
     st.session_state.response2 = response2
 
-    st.session_state.completed_sections = 2
-
     image_path = "images/Inside_out.png"
     if os.path.isfile(image_path):
         st.image(image_path, use_column_width=True)
@@ -268,14 +231,8 @@ def ten_items():
 
     st.success('Una vez que termine, puede ir a la pestaña Vocabulary Check List para continuar el cuestionario.')
 
-    if st.button('Continuar a Vocabulary Check List', on_click=lambda: navigate_page('Vocabulary Check List')):
-        navigate_page('Vocabulary Check List')
-
-    if st.button('Volver a Escala de Beck', on_click=lambda: navigate_page('Escala de Beck')):
-        navigate_page('Escala de Beck')
-
 def words():
-    st.header(':blue[Sección VCL - Listado de Palabras]')
+    st.header('Sección VCL - Listado de Palabras')
     st.subheader(':blue[Evaluación del conocimiento del léxico]')
     st.markdown("""
     En esta sección, se te presentará un listado de palabras para evaluar tu conocimiento de las mismas.
@@ -296,7 +253,7 @@ def words():
 
     Por favor, revisa cada palabra en la lista y selecciona si la conoces o no. Trata de ser lo más preciso posible para obtener una evaluación exacta de tu vocabulario.
     """)
-    col1, col2 = st.columns([0.20,0.80])
+    col1, col2 = st.columns([0.10,0.90])
 
     with col1:
         response3 = vcl()
@@ -312,39 +269,20 @@ def words():
 
     st.session_state.response3 = response3
 
-    st.session_state.completed_sections = 3
-
     st.success('Una vez que termine, puede ir a la pestaña Demográficos para continuar el cuestionario.')
-
-    if st.button('Continuar a datos demográficos', on_click=lambda: navigate_page('Datos del entorno demográfico')):
-        navigate_page('Datos del entorno demográfico')
-
-    if st.button('Volver al cuestionario de personalidad', on_click=lambda: navigate_page('Cuestionario de personalidad')):
-        navigate_page('Cuestionario de personalidad')
 
 def demog():
     col1, col2 = st.columns([0.85,0.15])
     
     with col1:
-        st.header(':blue[Datos del entorno y desarrollo personal]')
-        st.subheader(':blue[Información Demográfica y Contextual]')
-        # st.markdown("""
-        # En esta última sección, te pediremos que proporciones información sobre tu entorno personal y desarrollo. Esto incluye aspectos como tu nivel educativo, lugar de crianza, género, y otros detalles relevantes.
-
-        # ### ¿Qué Información Se Solicita?
-
-        # Queremos conocer un poco más sobre ti para contextualizar mejor tus respuestas. Esta información es clave para analizar los datos de manera más detallada y comprender las posibles variaciones en los resultados basadas en diferentes contextos demográficos.
-
-        # ### ¿Por Qué Es Importante?
-
-        # Los datos demográficos ayudan a interpretar los resultados del cuestionario en función de tu trasfondo personal. Esto permite una comprensión más rica y precisa de los resultados y puede ofrecer perspectivas adicionales sobre cómo los factores personales influyen en tus respuestas.
-        # """)
+        st.header('Datos del entorno y desarrollo personal')
+        st.subheader(':blue[Información demográfica y contextual]')
         st.markdown('En esta última sección, te pediremos que proporciones información sobre tu entorno personal y desarrollo.')
         st.markdown('Esto incluye aspectos como tu nivel educativo, lugar de crianza, género, y otros detalles relevantes.')
-        st.markdown(' ### ¿Qué Información Se Solicita? ')
+        st.markdown(' ### ¿Qué información se solicita? ')
         st.markdown('Queremos conocer un poco más sobre ti para contextualizar mejor tus respuestas.')
         st.markdown('Esta información es clave para analizar los datos de manera más detallada y comprender las posibles variaciones en los resultados basadas en diferentes contextos demográficos.')
-        st.markdown(' ### ¿Por Qué Es Importante? ')
+        st.markdown(' ### ¿Por qué es importante? ')
         st.markdown('Los datos demográficos ayudan a interpretar los resultados del cuestionario en función de tu trasfondo personal.')
         st.markdown('Esto permite una comprensión más rica y precisa de los resultados y puede ofrecer perspectivas adicionales sobre cómo los factores personales influyen en tus respuestas.')
 
@@ -358,16 +296,12 @@ def demog():
     response4 = demographic()
     st.session_state.response4 = response4
 
-    st.session_state.completed_sections = 4
 
     st.success('Una vez que termine, envíe el cuestionario y decida si quiere ver los resultados')
-    
-    if st.button('Volver al Vocabulary Check List', on_click=lambda: navigate_page('Vocabulary Check List')):
-        navigate_page('Vocabulary Check List')
 
     if st.button('Enviar cuestionario'):
         if 'response1' in st.session_state and 'response2' in st.session_state and 'response3' in st.session_state and 'response4' in st.session_state:
-            save_response(response())
+            create_df(response())
             st.success('Respuestas enviadas con éxito.')
             st.session_state.questionnaire_submitted = True
     
@@ -375,80 +309,6 @@ def demog():
             st.error('Por favor, complete las secciones anteriores antes de enviar.')
 
 
-def principal():
-
-    st.title(":blue[Proyecto Final: Cuestionario Dass]")
-    st.header(":blue[Bienvenido a nuestro Proyecto Final]")
-    st.markdown("""
-    ¡Gracias por visitar nuestro cuestionario! Este proyecto está diseñado para evaluar diversos aspectos relacionados con la ansiedad, el estrés, y la depresión, así como para obtener una visión más completa de tu perfil personal. Tu participación es fundamental y muy apreciada. A continuación, prodrás navegar a través de varias secciones que incluyen: una escala de Beck, un cuestionario de personalidad, y una sección de datos demográficos.
-
-    ### Objetivo del Cuestionario
-
-    El cuestionario que estás a punto de completar tiene como objetivo proporcionar una evaluación integral de tu estado emocional y psicológico. Esta información se utilizará únicamente con fines educativos y de investigación. Todos los datos serán tratados con la máxima confidencialidad y no se publicarán ni compartirán de ninguna manera que pueda identificarte personalmente.
-
-    ### ¿Cómo Funciona?
-
-    1. **Escala de Beck**: Evaluarás tu nivel de ansiedad, estrés y depresión en base a preguntas sobre tu experiencia en la última semana.
-    2. **Cuestionario de Personalidad**: Completarás un breve inventario que te ayudará a clasificar tus características de personalidad.
-    3. **Datos Demográficos**: Proporcionarás información sobre ti que ayudará a contextualizar tus respuestas.
-
-    Si tienes alguna pregunta o necesitas asistencia durante el cuestionario, no dudes en contactarnos. ¡Comencemos!
-    """)
-    col1, col2, col3 = st.columns([0.4, 0.2, 0.4])
-
-    with col1:
-
-        st.write('\n')
-
-        if st.button('Ir a Escala de Beck', on_click=lambda: navigate_page('Escala de Beck')):
-            navigate_page('Escala de Beck')
-        
-        st.write('\n')
-
-        if st.button('Ir al cuestionario de personalidad', on_click=lambda: navigate_page('Cuestionario de personalidad')):
-            navigate_page('Cuestionario de personalidad')
-
-        st.write('\n')
-
-        if st.button('Ir a Vocabulary Check Lists', on_click=lambda:navigate_page('Vocabulary Check List')):
-            navigate_page('Vocabulary Check List')
-            
-        st.write('\n')
-
-        if st.button('Ir a cuestionario sobre datos demográficos', on_click=lambda:navigate_page('Datos del entorno demográfico')):
-            navigate_page('Datos del entorno demográfico')
-
-    with col2:
-
-        image_path = "images/nadine.png"
-        if os.path.isfile(image_path):
-            st.image(image_path,  width=160)
-        else:
-            st.write(f"Archivo no encontrado en: {image_path}")
-
-        image_path = "images/paula.png"
-        if os.path.isfile(image_path):
-            st.image(image_path,  width=160)
-        else:
-            st.write(f"Archivo no encontrado en: {image_path}")
-
-        image_path = "images/rosalia.png"
-        if os.path.isfile(image_path):
-            st.image(image_path,  width=160)
-        else:
-            st.write(f"Archivo no encontrado en: {image_path}")
-
-    with col3:
-
-        st.write('\n')
-        st.subheader(':blue[Autoras y desarrolladoras del proyecto]')
-        st.write('\n')
-        st.write("¡Bienvenidos! Somos Nadine, Paula y Rosalía, originarias de Madrid, Vigo y Santiago, respectivamente.")
-        st.write("Como apasionadas del Data Science, hemos creado este proyecto como culminación de nuestros estudios,"
-        "poniendo en él todo nuestro entusiasmo y conocimientos.")
-        st.write("Esperamos que disfrutes de la experiencia tanto como nosotras hemos disfrutado desarrollándola.")
-        st.write("Gracias de corazón por tu apoyo y participación.")
-        
 def response_q():
     if 'response1' in st.session_state and 'response2' in st.session_state and 'response3' in st.session_state and 'response4' in st.session_state:
         response_q={**st.session_state.response1}
@@ -463,66 +323,52 @@ def response_t():
         return response_df
     return None
 
-def response():
+def response_firebase():
     if 'response1' in st.session_state and 'response2' in st.session_state and 'response3' in st.session_state and 'response4' in st.session_state:
         response={**st.session_state.response1, **st.session_state.response2, **st.session_state.response3, **st.session_state.response4}
         return response
     return None
 
-def main():
+def response():
+    if 'response1' in st.session_state and 'response2' in st.session_state and 'response3' in st.session_state and 'response4' in st.session_state:
+        r1=pd.DataFrame([st.session_state.response1])
+        r2=pd.DataFrame([st.session_state.response2])
+        r3=pd.DataFrame([st.session_state.response3])
+        r4=pd.DataFrame([st.session_state.response4])
+        response=pd.concat([r1,r2,r3,r4],axis=1)
+        return response
+    return None
 
-    image_path = "images/logo_.jpg"
-    if os.path.isfile(image_path):
-        st.sidebar.image(image_path, use_column_width=True)
-    else:
-        st.sidebar.write(f"Archivo no encontrado en: {image_path}")
-    st.sidebar.title('Navegador')
+def show_survey():
 
-    #Progress bar
-    if 'completed_sections' not in st.session_state:
-        st.session_state.completed_sections = 0
-
-    completed_sections = st.session_state.completed_sections
-    total_sections = 4  
-    progress = (completed_sections / total_sections) * 100
-
-    st.sidebar.markdown(f"**Progreso del Cuestionario**\n{completed_sections} de {total_sections} secciones completadas ({progress:.1f}%)")
-
-    if 'page' not in st.session_state:
-        st.session_state.page = 'Principal'
+    st.session_state.completed_sections = 2
     
     if 'questionnaire_submitted' not in st.session_state:
         st.session_state.questionnaire_submitted = False
     
-    st.sidebar.selectbox(
-        'Páginas',
-        ['Principal', 'Escala de Beck', 'Cuestionario de personalidad','Vocabulary Check List', 'Datos del entorno demográfico'],
-        index=['Principal', 'Escala de Beck', 'Cuestionario de personalidad', 'Vocabulary Check List', 'Datos del entorno demográfico'].index(st.session_state.page),
-        key='new_page',
-        on_change=lambda: navigate_page(st.session_state.new_page))
-    
-    st.session_state.page = st.session_state.new_page
+    tab1, tab2, tab3, tab4 = st.tabs(['**Escala de Beck**', '**Cuestionario de personalidad**','**Vocabulary Check List**', '**Datos del entorno demográfico**'])
 
-    if st.session_state.page == 'Principal':
-        principal()
-    elif st.session_state.page == 'Cuestionario de personalidad':
-        ten_items()
-    elif st.session_state.page == 'Datos del entorno demográfico':
-        demog()
-    elif st.session_state.page == 'Escala de Beck':
+    with tab1:
         escala_beck()
-    elif st.session_state.page == 'Vocabulary Check List':
+
+    with tab2:
+        ten_items()
+
+    with tab3:
         words()
 
+    with tab4:
+        demog()
 
-    if st.sidebar.button('Enviar cuestionario completo'):
-        if 'response1' in st.session_state and 'response2' in st.session_state and 'response3' in st.session_state and 'response4' in st.session_state:
-            save_response(response())
-            st.success('Respuestas enviadas con éxito.')
-            st.session_state.questionnaire_submitted = True
 
-        else:
-            st.error('Por favor, complete las secciones anteriores antes de enviar.')
+    # if st.sidebar.button('Enviar cuestionario completo'):
+    #     if 'response1' in st.session_state and 'response2' in st.session_state and 'response3' in st.session_state and 'response4' in st.session_state:
+    #         save_response(response())
+    #         st.success('Respuestas enviadas con éxito.')
+    #         st.session_state.questionnaire_submitted = True
+
+    #     else:
+    #         st.error('Por favor, complete las secciones anteriores antes de enviar.')
        
 
     if st.session_state.questionnaire_submitted:
@@ -568,23 +414,10 @@ def main():
 
         with col2:
 
-            image_path_ = "images/thank_you.png"
+            image_path_ = "images/gracias.png"
 
             if os.path.isfile(image_path_):
                 st.image(image_path_, use_column_width=True)
             else:
                 st.write(f"Archivo no encontrado en: {image_path_}")
                 
-
-            
-
-    st.sidebar.markdown("""
-    **¿Necesitas ayuda?**  
-    Si tienes alguna pregunta o necesitas asistencia, no dudes en contactarnos:
-
-    - **Email**: soporte@proyectofinaldass.com
-    """)
-    
-if __name__ == "__main__":
-    main()
-
