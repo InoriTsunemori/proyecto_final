@@ -92,10 +92,10 @@ def main():
 
 
         image_path = "images/logo_zen.png"
-        if image_path.is_file():
+        if image_path:
             st.sidebar.image(image_path, use_column_width=True)
         else:
-            st.sidebar.write(f"Archivo no encontrado en: {image_path}")
+            st.sidebar.write(f"Archivo no encontrado")
 
         st.write("Progreso del cuestionario:")
         st.write(progress)
