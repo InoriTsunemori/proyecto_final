@@ -188,7 +188,7 @@ def escala_beck():
     with col2:
         st.text('\n')
         image_path = "images/cabeza_universo.png"
-        if os.path.isfile(image_path):
+        if imagen_path.is_file():
             st.image(image_path, use_column_width=True)
         else:
             st.write(f"Archivo no encontrado en: {image_path}")
@@ -224,7 +224,7 @@ def ten_items():
     st.session_state.response2 = response2
 
     image_path = "images/Inside_out.png"
-    if os.path.isfile(image_path):
+    if imagen_path.is_file():
         st.image(image_path, use_column_width=True)
     else:
         st.write(f"Archivo no encontrado en: {image_path}")
@@ -260,7 +260,7 @@ def words():
 
     with col2: 
         image_path = "images/composiocion_2.jpg"
-        if os.path.isfile(image_path):
+        if image_path.is_file():
             st.image(image_path, use_column_width=True)
         else:
             st.write(f"Archivo no encontrado en: {image_path}")
@@ -288,7 +288,7 @@ def demog():
 
     with col2:
         image_path = "images/demografico.png"
-        if os.path.isfile(image_path):
+        if image_path.is_file():
             st.image(image_path, use_column_width=True)
         else:
             st.write(f"Archivo no encontrado en: {image_path}")
@@ -359,18 +359,7 @@ def show_survey():
 
     with tab4:
         demog()
-
-
-    # if st.sidebar.button('Enviar cuestionario completo'):
-    #     if 'response1' in st.session_state and 'response2' in st.session_state and 'response3' in st.session_state and 'response4' in st.session_state:
-    #         save_response(response())
-    #         st.success('Respuestas enviadas con éxito.')
-    #         st.session_state.questionnaire_submitted = True
-
-    #     else:
-    #         st.error('Por favor, complete las secciones anteriores antes de enviar.')
        
-
     if st.session_state.questionnaire_submitted:
         visualizar_resultados = st.radio(
             '¿Ver resultados?',
@@ -416,7 +405,7 @@ def show_survey():
 
             image_path_ = "images/gracias.png"
 
-            if os.path.isfile(image_path_):
+            if image_path.is_file():
                 st.image(image_path_, use_column_width=True)
             else:
                 st.write(f"Archivo no encontrado en: {image_path_}")
