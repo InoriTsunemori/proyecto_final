@@ -405,9 +405,9 @@ def show_survey():
 
         with col2:
 
-            image_path_ = "images/gracias.png"
+            image_path_= "images/gracias.png"
 
-            if image_path:
+            if image_path_:
                 st.image(image_path_, use_column_width=True)
             else:
                 st.write(f"Archivo no encontrado")
