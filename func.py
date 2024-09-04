@@ -10,11 +10,6 @@ def get_db():
     db = firestore.Client.from_service_account_info(key_json)
     return db
 
-def get_db_local():
-
-    db = firestore.Client.from_service_account_json('key.json')
-    return db
-
 def importar_datos_firebase():
 
     db=get_db()
