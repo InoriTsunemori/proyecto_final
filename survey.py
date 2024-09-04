@@ -304,6 +304,7 @@ def demog():
     if st.button('Enviar cuestionario'):
         if 'response1' in st.session_state and 'response2' in st.session_state and 'response3' in st.session_state and 'response4' in st.session_state:
             create_df(response())
+            save_response(response_firebase())
             st.success('Respuestas enviadas con éxito.')
             st.session_state.questionnaire_submitted = True
     
