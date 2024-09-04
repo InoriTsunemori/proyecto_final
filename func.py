@@ -9,7 +9,13 @@ def get_db():
     key_json = st.secrets["firebase_key"]
     db = firestore.Client.from_service_account_info(key_json)
     return db
-
+    
+def save_response(data):
+    db = get_db()
+    doc_ref = db.collection('responses').document()
+    data['timestamp'] = datetime.datetime.now().isoformat()
+    doc_ref.set(data)
+    
 def importar_datos_firebase():
 
     db=get_db()
